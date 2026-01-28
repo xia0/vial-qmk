@@ -4,8 +4,8 @@
     "productId":"0x736B",
     "lighting": "none",
     "matrix": {
-        "rows": 14,
-        "cols": 4
+        "rows": 4,
+        "cols": 14
     },
     "layouts": {
         "labels":[
