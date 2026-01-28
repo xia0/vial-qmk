@@ -22,18 +22,18 @@
         }
     },
     "matrix_pins": {
-        "cols": ["GP0", "GP1", "GP2"],
-        "rows": ["GP3", "GP4", "GP5"]
+        "cols": ["B1", "B3", "B2"],
+        "rows": ["F4", "F5", "F6"]
     },
     "diode_direction": "COL2ROW",
     "encoder": {
         "rotary": [
-            {"pin_a": "GP13", "pin_b": "GP12"},
-            {"pin_a": "GP10", "pin_b": "GP9"}
+            {"pin_a": "D3", "pin_b": "D2"},
+            {"pin_a": "D0", "pin_b": "D1"}
         ]
     },
-    "processor": "RP2040",
-    "bootloader": "rp2040",
+    "processor": "atmega32u4",
+    "bootloader": "atmel-dfu",
     "layouts": {
         "LAYOUT": {
             "layout": [
