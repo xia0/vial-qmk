@@ -1,5 +1,42 @@
 #include QMK_KEYBOARD_H
 
+#if defined(ENCODER_MAP_ENABLE)
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
+    [0] =   { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [1] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [2] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [3] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [4] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [5] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [6] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [7] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [8] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [9] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [10] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [11] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [12] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [13] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [14] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [15] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [16] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [17] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [18] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [19] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [20] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [21] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [22] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [23] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [24] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [25] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [26] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [27] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [28] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [29] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [30] =   { ENCODER_CCW_CW(KC_NO, KC_NO) },
+    [31] =   { ENCODER_CCW_CW(KC_NO, KC_NO) }
+};
+#endif
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [0] = LAYOUT(
@@ -9,10 +46,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_SPC , KC_SPC ,
     KC_SPC , KC_SPC ,
     KC_SPC , KC_SPC ,
-    _______, _______, _______, _______, _______,
+    KC_WIN , KC_ALT , _______, KC_CTRL, KC_LSFT,
 
     KC_MUTE,
-    _______, _______, _______, _______
+    KC_LCAP, _______, _______, _______
   ),
   [1] = LAYOUT(
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
