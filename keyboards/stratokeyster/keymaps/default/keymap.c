@@ -47,22 +47,77 @@ int get_highest_fret(int row) {
 bool is_strum_held(int row) {
   switch(row) {
     case 0:
-      if (matrix_is_on(1, 13) || matrix_is_on(3,11)) { return true; }
+      if (matrix_is_on(3,0) || matrix_is_on(3,2)) { return true; }
       break;
     case 1:
-      if (matrix_is_on(2, 12) || matrix_is_on(3,12)) { return true; }
+      if (matrix_is_on(3,1) || matrix_is_on(3,4)) { return true; }
       break;
     case 2:
-      if (matrix_is_on(2, 13) || matrix_is_on(3,13)) { return true; }
+      if (matrix_is_on(3,3) || matrix_is_on(3,5)) { return true; }
       break;
   }
   return false;
 }
 
+// get what position the pu selector is currently in
+int get_pickup_selector_pos(void) {
+  if (!matrix_is_on(3,7)) {
+    if (matrix_is_on(3,6)) { return 0; }
+    else if (matrix_is_on(3,8)) { return 4; }
+  }
+  else {
+    if (matrix_is_on(3,6)) { return 1; }
+    else if (matrix_is_on(3,8)) { return 3; }
+    else { return 2; }
+  }
+  return -1;
+}
+
+// press the mods corresponding to pu pos
+void set_pickup_selector_mods(int pos) {
+
+  switch(pos) {
+    case 0:
+      register_code(KC_RIGHT_CTRL);
+      register_code(KC_RIGHT_ALT);
+      break;
+    case 1:
+      unregister_code(KC_RIGHT_CTRL);
+      register_code(KC_RIGHT_ALT);
+      break;
+    case 2:
+      unregister_code(KC_RIGHT_ALT);
+      unregister_code(KC_RIGHT_CTRL);
+      break;
+    case 3:
+      unregister_code(KC_RIGHT_SHIFT);
+      register_code(KC_RIGHT_CTRL);
+      break;
+    case 4:
+      register_code(KC_RIGHT_CTRL);
+      register_code(KC_RIGHT_SHIFT);
+      break;
+  }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     xprintf("KL: row: %u, column: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+    xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
 
+    // process pickup position
+    if (record->event.key.row == 3 &&
+        (
+          record->event.key.col == 6 ||
+          record->event.key.col == 7 ||
+          record->event.key.col == 8
+        )
+    ) {
+      xprintf("PU: %u\n", get_pickup_selector_pos());
+      set_pickup_selector_mods(get_pickup_selector_pos());
+    }
+
+    // type the letter
     if (get_highest_layer(layer_state) != NORMAL &&
         get_highest_layer(layer_state) != CONFIG
       ) { // only run when not on normal typing layer
@@ -118,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        MO(PU0), MO(PU2), MO(PU4), MO(PU3), MO(PU1),
+        _______, _______, _______,
         KC_MUTE,
         KC_LOCKING_CAPS_LOCK, _______, MO(NORMAL), MO(CONFIG)
     ),
@@ -129,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -140,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -151,7 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -162,18 +217,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU2] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -184,18 +228,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU4] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -206,7 +239,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
+        _______,
+        _______, _______, _______, _______
+    ),
+    [PU2] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______,
+        _______, _______,
+        _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -217,7 +261,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______,
         _______, _______,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
+        _______,
+        _______, _______, _______, _______
+    ),
+    [PU4] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______,
+        _______, _______,
+        _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -228,7 +283,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_DOWN, KC_UP  ,
         KC_RGHT, KC_LEFT,
         KC_SPC , KC_SPC ,
-        _______, _______, _______, _______, _______,
+        _______, _______, _______,
         _______,
         _______, _______, _______, _______
     ),
@@ -239,7 +294,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO, KC_NO,
         KC_NO, KC_NO,
         KC_NO, KC_NO,
-        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO, KC_NO, KC_NO,
         QK_BOOTLOADER,
         _______, _______, _______, _______
     )

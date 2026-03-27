@@ -28,7 +28,7 @@
         "cols": ["GP3", "GP4", "GP5", "GP6", "GP7", "GP8", "GP9", "GP10", "GP11", "GP12", "GP13", "GP14", "GP15", "GP16"],
         "rows": ["GP19", "GP20", "GP21", "GP18"]
     },
-    "diode_direction": "ROW2COL",
+    "diode_direction": "COL2ROW",
     "encoder": {
         "rotary": [
             {"pin_b": "GP26", "pin_a": "GP27"}
@@ -92,15 +92,13 @@
                 {"matrix": [3, 6], "x": 6, "y": 3},
                 {"matrix": [3, 7], "x": 7, "y": 3},
                 {"matrix": [3, 8], "x": 8, "y": 3},
+                
                 {"matrix": [3, 9], "x": 9, "y": 3},
+
                 {"matrix": [3, 10], "x": 10, "y": 3},
-
-                {"matrix": [1, 13], "x": 13, "y": 1},
-
                 {"matrix": [3, 11], "x": 11, "y": 3},
                 {"matrix": [3, 12], "x": 12, "y": 3},
-                {"matrix": [3, 13], "x": 13, "y": 3},
-                {"matrix": [2, 13], "x": 13, "y": 2}
+                {"matrix": [3, 13], "x": 13, "y": 3}
             ]
         }
     }
