@@ -78,24 +78,29 @@ void set_pickup_selector_mods(int pos) {
 
   switch(pos) {
     case 0:
-      register_code(KC_RIGHT_CTRL);
-      register_code(KC_RIGHT_ALT);
+      register_code(KC_RIGHT_GUI);
+      unregister_code(KC_RIGHT_CTRL);
+      unregister_code(KC_RIGHT_ALT);
       break;
     case 1:
+      unregister_code(KC_RIGHT_GUI);
+      register_code(KC_RIGHT_CTRL);
+      unregister_code(KC_RIGHT_ALT);
+      break;
+    case 2:
+      unregister_code(KC_RIGHT_GUI);
+      register_code(KC_RIGHT_CTRL);
+      register_code(KC_RIGHT_ALT);
+      break;
+    case 3:
+      unregister_code(KC_RIGHT_GUI);
       unregister_code(KC_RIGHT_CTRL);
       register_code(KC_RIGHT_ALT);
       break;
-    case 2:
-      unregister_code(KC_RIGHT_ALT);
-      unregister_code(KC_RIGHT_CTRL);
-      break;
-    case 3:
-      unregister_code(KC_RIGHT_SHIFT);
-      register_code(KC_RIGHT_CTRL);
-      break;
     case 4:
-      register_code(KC_RIGHT_CTRL);
-      register_code(KC_RIGHT_SHIFT);
+      unregister_code(KC_RIGHT_GUI);
+      unregister_code(KC_RIGHT_CTRL);
+      unregister_code(KC_RIGHT_ALT);
       break;
   }
 }
