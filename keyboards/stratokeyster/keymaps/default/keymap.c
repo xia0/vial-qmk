@@ -75,39 +75,56 @@ int get_pickup_selector_pos(void) {
 
 // press the mods corresponding to pu pos
 void set_pickup_selector_mods(int pos) {
+  /*
+    neck | mid + neck | middle | mid + bridge | bridge
+    GUI  | CTRL+ALT   | ALT    | CTRL         | none
+  */
+
+
+  // TODO: figure out why set_mods doesn't work for pos 3 and 1
+
+  //int mods = 0;
+  //xprintf("setting mod state to PU pos: %u, bitmask \n", mods);
 
   switch(pos) {
     case 0:
+      //mods = (MOD_BIT(KC_RIGHT_GUI));
       register_code(KC_RIGHT_GUI);
       unregister_code(KC_RIGHT_CTRL);
       unregister_code(KC_RIGHT_ALT);
       break;
     case 1:
-      unregister_code(KC_RIGHT_GUI);
-      register_code(KC_RIGHT_CTRL);
-      unregister_code(KC_RIGHT_ALT);
-      break;
-    case 2:
+      //mods = (MOD_BIT(KC_RIGHT_CTRL) | MOD_BIT(KC_RIGHT_ALT));
       unregister_code(KC_RIGHT_GUI);
       register_code(KC_RIGHT_CTRL);
       register_code(KC_RIGHT_ALT);
       break;
-    case 3:
+    case 2:
+      //mods = (MOD_BIT(KC_RIGHT_ALT));
       unregister_code(KC_RIGHT_GUI);
       unregister_code(KC_RIGHT_CTRL);
       register_code(KC_RIGHT_ALT);
       break;
+    case 3:
+      //mods = (MOD_BIT(KC_RIGHT_CTRL));
+      unregister_code(KC_RIGHT_GUI);
+      register_code(KC_RIGHT_CTRL);
+      unregister_code(KC_RIGHT_ALT);
+      break;
     case 4:
+      //clear_mods();
       unregister_code(KC_RIGHT_GUI);
       unregister_code(KC_RIGHT_CTRL);
       unregister_code(KC_RIGHT_ALT);
       break;
   }
+
+  //set_mods(mods);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    xprintf("KL: row: %u, column: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+    xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
     xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
 
     // process pickup position
@@ -125,7 +142,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // type the letter
     if (get_highest_layer(layer_state) != NORMAL &&
         get_highest_layer(layer_state) != CONFIG
-      ) { // only run when not on normal typing layer
+      ) { // only run when not on "normal" typing layer
 
       // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
       if (record->event.pressed) {
@@ -158,8 +175,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
 
       }
-
     }
+
+
 
     return true;
 }
