@@ -1,6 +1,7 @@
 # stratokeyster
+guitar hero mechanical keyboard
 
-### pick guard wiring
+## pick guard wiring
 #### 5 way pickup selector
 - com -> row 3
 - 1 or 6 -> col 8
@@ -17,3 +18,21 @@
 - 2 -> col 12
 - 3 -> col 11
 - 4 -> col 10
+
+## usage
+#### pickup selector (mods)
+| neck | neck + mid | middle | bridge + mid | bridge |
+|---|---|---|---|---|
+| gui | ctrl + alt | alt | ctrl | none |
+
+#### rotary encoder
+- volume control (clockwise = vol up)
+- mute/unmute
+
+#### rotary switch
+| pos 1 (ccw) | pos 2 | pos 3 | pos 4 (cw) |
+|---|---|---|---|
+| config | normal typing | guitar typing | caps lock |
+
+#### bootloader
+accesss bootloader by switching the keyboard into the "config" layer and push the rotary encoder
