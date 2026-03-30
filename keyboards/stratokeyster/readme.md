@@ -9,7 +9,7 @@
 
 #### EC11 rotary encoder 15mm half shaft
 - push button -> row 3 and col 9
-- rotary -> encA, gnd, encB
+- encoder -> encA, gnd, encB
 
 #### RS26 3 pole 4 throw 15mm half shaft
 - com -> row 3
