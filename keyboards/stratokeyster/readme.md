@@ -1,6 +1,6 @@
 # stratokeyster
 
-### wiring
+### pick guard wiring
 #### 5 way pickup selector
 - com -> row 3
 - 1 or 6 -> col 8
