@@ -25,6 +25,7 @@ guitar hero mechanical keyboard
 |mx switch for strumbars|6|
 |2u stabs|3|
 |3d printed parts||
+* phillips head and silver colour bolts recommended for aesthetic reasons
 
 ## pick guard wiring
 #### pickup selector
