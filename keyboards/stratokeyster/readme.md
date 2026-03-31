@@ -9,7 +9,7 @@ guitar hero mechanical keyboard
 |M3 x 10~12 mm bolt|14|
 |M3 washer|6+|
 |M3 nyloc nut|3|
-|M3 x 5 mm OD x 5 mm L heat set insert|14|
+|M3 x 5 mm OD x 5 mm L heat set insert|18|
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
