@@ -4,7 +4,7 @@ guitar hero mechanical keyboard
 ## bom
 |item|qty|
 |---|---|
-|M3 x 10~12 mm bolt*|14|
+|M3 x 10~20 mm bolt*|14|
 |M3 x 30 mm bolt*|4|
 |M3 x 80 mm bolt|3|
 |M3 washer|6+|
