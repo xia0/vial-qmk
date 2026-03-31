@@ -26,18 +26,18 @@ guitar hero mechanical keyboard
 |2u stabs|2-3|
 |3d printed parts||
 
-_\* phillips head silver colour bolts recommended for aesthetic reasons_
+_\* phillips head silver colour bolts recommended for aesthetic reasons_\
 _^ or any combination of pins that add up_
 
 ## pick guard wiring
 #### pickup selector
-- com -> row 3
+- com (4 or 5) -> row 3
 - 1 or 6 -> col 8
 - 2 or 7 -> col 7
 - 3 or 8 -> col 6
 
 #### EC11 rotary encoder
-- push button -> row 3 and col 9
+- push button -> row 3, col 9
 - encoder -> encA, gnd, encB
 
 #### RS26 rotary switch
