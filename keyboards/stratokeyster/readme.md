@@ -19,8 +19,8 @@ guitar hero mechanical keyboard
 |strumbar pcb|1|
 |18p 2.54 mm pitch angled connector male|1|
 |18p 2.54 mm pitch dupont cable female end ~5 cm|1|
-|usb breakout board male|1|
-|usb breakout board female|1|
+|usb breakout board male (to match your pico)|1|
+|usb breakout board female (to match your lead)|1|
 |mx switch for fretboard|39|
 |mx switch for strumbars|6|
 |2u stabs|3|
