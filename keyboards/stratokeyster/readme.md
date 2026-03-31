@@ -27,7 +27,7 @@ guitar hero mechanical keyboard
 |3d printed parts||
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_\
-_^ or any combination of pins that add up_
+_^ or combination of pins that add up_
 
 ## pick guard wiring
 #### pickup selector
