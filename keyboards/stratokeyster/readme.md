@@ -17,8 +17,8 @@ guitar hero mechanical keyboard
 |fretboard pcb|1|
 |fretboard plate|1|
 |strumbar pcb|1|
-|18p 2.54 mm pitch angled connector male|1|
-|18p 2.54 mm pitch dupont cable female end ~5 cm|1|
+|18p 2.54 mm pitch angled connector male^|1|
+|18p 2.54 mm pitch dupont cable female end ~5 cm^|1|
 |usb breakout board male (to match your pico)|1|
 |usb breakout board female (to match your lead)|1|
 |mx switch for fretboard|39-40|
@@ -27,6 +27,7 @@ guitar hero mechanical keyboard
 |3d printed parts||
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_
+_^ or any combination of pins that add up_
 
 ## pick guard wiring
 #### pickup selector
