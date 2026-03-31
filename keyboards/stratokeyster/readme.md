@@ -4,9 +4,9 @@ guitar hero mechanical keyboard
 ## bom
 |item|qty|
 |---|---|
-|M3 x 30 mm bolt|4|
+|M3 x 10~12 mm bolt*|14|
+|M3 x 30 mm bolt*|4|
 |M3 x 80 mm bolt|3|
-|M3 x 10~12 mm bolt|14|
 |M3 washer|6+|
 |M3 nyloc nut|3|
 |M3 x 5 mm OD x 5 mm L heat set insert|18|
@@ -26,7 +26,7 @@ guitar hero mechanical keyboard
 |2u stabs|2-3|
 |3d printed parts||
 
-\* phillips head silver colour bolts recommended for aesthetic reasons
+_\* phillips head silver colour bolts recommended for aesthetic reasons_
 
 ## pick guard wiring
 #### pickup selector
@@ -53,7 +53,7 @@ guitar hero mechanical keyboard
 | gui | ctrl + alt | alt | ctrl | none |
 
 #### rotary encoder
-- volume control (clockwise = vol up)
+- volume control
 - mute/unmute
 
 #### rotary switch
