@@ -26,7 +26,7 @@ guitar hero mechanical keyboard
 |2u stabs|3|
 |3d printed parts||
 
-\* phillips head and silver colour bolts recommended for aesthetic reasons
+\* phillips head silver colour bolts recommended for aesthetic reasons
 
 ## pick guard wiring
 #### pickup selector
