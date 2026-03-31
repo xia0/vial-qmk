@@ -11,14 +11,14 @@ guitar hero mechanical keyboard
 |M3 nyloc nut|3|
 |M3 x 5 mm OD x 5 mm L heat set insert|14|
 |ec11 rotary encoder 15 mm half shaft|1|
-|rs26 3 pole 4 throw rotary switch|1|
+|rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
 |raspberry pi pico|1|
 |fretboard pcb|1|
 |fretboard plate|1|
 |strumbar pcb|1|
 |18p 2.54 mm pitch angled connector male|1|
-|18p 2.54 mm pitch dupont cable female end|1|
+|18p 2.54 mm pitch dupont cable female end ~5 cm|1|
 |usb breakout board male|1|
 |usb breakout board female|1|
 |mx switch for fretboard|39|
