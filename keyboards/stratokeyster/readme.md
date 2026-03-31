@@ -6,7 +6,7 @@ guitar hero mechanical keyboard
 |---|---|
 |M3 x 30 mm bolt|4|
 |M3 x 80 mm bolt|3|
-|M3 x 10~12 mm bolt|10|
+|M3 x 10~12 mm bolt|14|
 |M3 washer|6+|
 |M3 nyloc nut|3|
 |M3 x 5 mm OD x 5 mm L heat set insert|14|
