@@ -21,9 +21,9 @@ guitar hero mechanical keyboard
 |18p 2.54 mm pitch dupont cable female end ~5 cm|1|
 |usb breakout board male (to match your pico)|1|
 |usb breakout board female (to match your lead)|1|
-|mx switch for fretboard|39|
+|mx switch for fretboard|39-40|
 |mx switch for strumbars|6|
-|2u stabs|3|
+|2u stabs|2-3|
 |3d printed parts||
 
 \* phillips head silver colour bolts recommended for aesthetic reasons
