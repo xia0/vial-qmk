@@ -60,7 +60,7 @@ _^ or combination of pins that add up_
 #### rotary switch
 | pos 1 (ccw) | pos 2 | pos 3 | pos 4 (cw) |
 |---|---|---|---|
-| config | normal typing | guitar typing | caps lock |
+| config | normal typing | no sustain | sustain |
 
 #### bootloader
 accesss bootloader by switching the keyboard into the "config" layer and push the rotary encoder

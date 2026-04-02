@@ -5,15 +5,8 @@
 
 enum layer_names {
     DEFAULT,
-    TONE0,
-    TONE1,
-    TONE2,
-    TONE3,
-    PU0,
-    PU1,
-    PU2,
-    PU3,
-    PU4,
+    NOSUS,
+    BASIC,
     NORMAL,
     CONFIG
 };
@@ -27,6 +20,8 @@ const int fretboard[3][14] = {
 
 // define how many keys are in each row on the fretboard
 const int num_frets[] = { 14, 13, 12 };
+
+const int strumbar_row[] = { 0, 1, 0, 2, 1, 2 };
 
 // returns the highest held fret for specified row
 int get_highest_fret(int row) {
@@ -44,8 +39,8 @@ int get_highest_fret(int row) {
 }
 
 // returns whether specified row should be considered held down or not
-bool is_strum_held(int row) {
-  switch(row) {
+bool is_strum_held(int r) {
+  switch(r) {
     case 0:
       if (matrix_is_on(3,0) || matrix_is_on(3,2)) { return true; }
       break;
@@ -122,6 +117,47 @@ void set_pickup_selector_mods(int pos) {
   //set_mods(mods);
 }
 
+void unregister_row(int row) {
+  for (int f = 0; f < num_frets[row]; f++) {
+    unregister_code(fretboard[row][f]);
+  }
+}
+
+// unregister space if all strumbars excluding fretted string is open
+void unregister_space(void) {
+  for (int i = 0; i <= 2; i++) {
+    // if strumbar is held or row is not fretted
+    if (!(!is_strum_held(i) || (is_strum_held(i) && get_highest_fret(i) >= 0))) {
+      return;
+    }
+  }
+  unregister_code(KC_SPACE);
+}
+
+// register space if any open string is held
+void register_space(void) {
+  for (int i = 0; i <= 2; i++) {
+    if (is_strum_held(i) && get_highest_fret(i) < 0) { // if playing open string
+      if (get_highest_layer(layer_state) == NOSUS) { tap_code(KC_SPACE); }
+      else { register_code(KC_SPACE); }
+      return;
+    }
+  }
+}
+
+
+// register keycode corresponding to fret
+void register_fret(int row, int col) {
+  register_code(fretboard[row][col]);
+
+  // unregister any other frets that might be held or unregister all if no sustain
+  for (int f = 0; f < num_frets[row]; f++) {
+    if (f != col || get_highest_layer(layer_state) == NOSUS) { unregister_code(fretboard[row][f]); }
+  }
+}
+
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
@@ -139,45 +175,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       set_pickup_selector_mods(get_pickup_selector_pos());
     }
 
-    // type the letter
-    if (get_highest_layer(layer_state) != NORMAL &&
-        get_highest_layer(layer_state) != CONFIG
-      ) { // only run when not on "normal" typing layer
+    // only run when not on "normal" typing layer
+    if (get_highest_layer(layer_state) == NORMAL || get_highest_layer(layer_state) == CONFIG) { return true; }
 
-      // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
-      if (record->event.pressed) {
-        for (int i = 0; i<= 2; i++) {
-          if (is_strum_held(i)) {
-            if (get_highest_fret(i) >= 0) {
-              register_code(fretboard[i][get_highest_fret(i)]);
-            } else {
-              register_code(KC_SPACE);
-            }
-          }
-        }
+    if (record->event.key.row >= 0 && record->event.key.row <= 2) {
+      // ignore event if it's on a lower fret than what's currently held
+      if (record->event.key.col < get_highest_fret(record->event.key.row)) { return false; }
 
-      } else { // key is released
-
-        // only unregister spacebar if NONE of the strum bars are held
-        if (!is_strum_held(0) && !is_strum_held(1) && !is_strum_held(2)) {
-          unregister_code(KC_SPACE);
-        }
-
-        // iterate each row and check if a lower fret is still held
-        for (int i = 0; i <= 2; i++) {
-          if (is_strum_held(i)) { // only check if a key should be pressed if the strum bar is pressed
-            if (get_highest_fret(i) >= 0) register_code(fretboard[i][get_highest_fret(i)]);
-          } else { // if strum bar is not held, release all keys
-            for (int f = 0; f < num_frets[i]; f++) {
-              unregister_code(fretboard[i][f]);
-            }
-          }
-        }
-
-      }
+      // ignore fret press if strumbar not pressed on that row
+      if (!is_strum_held(record->event.key.row)) { return false; }
     }
 
+    // figure out which row to interact with
+    //   (strumbars are on row 3 but interact with rows 0-2)
+    int r = -1;
+    if (record->event.key.row == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row[record->event.key.col]; }
+    else { r = record->event.key.row; }
 
+
+    if (record->event.pressed) {
+      if (is_strum_held(r)) {
+        if (get_highest_fret(r) >= 0) { // fret is held
+          unregister_space();
+          register_fret(r, get_highest_fret(r));
+        } else { // no fret held - send space
+          register_space();
+        }
+      }
+    }
+    else { // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
+
+      // only unregister spacebar if NONE of the strum bars are held
+      unregister_space();
+
+      // check if a lower fret is still held
+      if (is_strum_held(r)) { // only check if a key should be pressed if the strum bar is pressed
+        if (get_highest_fret(r) >= 0) {
+          register_fret(r, get_highest_fret(r));
+        } else { // no fret held -- unregister all frets
+          unregister_row(r);
+          register_space();
+        }
+
+      } else { // if strum bar is not held, release all keys
+        unregister_row(r);
+      }
+    }
 
     return true;
 }
@@ -198,9 +241,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______, _______,
         KC_MUTE,
-        KC_LOCKING_CAPS_LOCK, _______, MO(NORMAL), MO(CONFIG)
+        MO(BASIC), MO(NOSUS), MO(NORMAL), MO(CONFIG)
     ),
-    [TONE0] = LAYOUT(
+    [BASIC] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -211,84 +254,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,
         _______, _______, _______, _______
     ),
-    [TONE1] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [TONE2] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [TONE3] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU0] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU1] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU2] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU3] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______, _______,
-        _______,
-        _______, _______, _______, _______
-    ),
-    [PU4] = LAYOUT(
+    [NOSUS] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
