@@ -34,6 +34,9 @@
             {"pin_b": "GP26", "pin_a": "GP27"}
         ]
     },
+    "indicators": {
+        "caps_lock": "GP25"
+    },
     "processor": "RP2040",
     "bootloader": "rp2040",
     "layouts": {
@@ -92,7 +95,7 @@
                 {"matrix": [3, 6], "x": 6, "y": 3},
                 {"matrix": [3, 7], "x": 7, "y": 3},
                 {"matrix": [3, 8], "x": 8, "y": 3},
-                
+
                 {"matrix": [3, 9], "x": 9, "y": 3},
 
                 {"matrix": [3, 10], "x": 10, "y": 3},

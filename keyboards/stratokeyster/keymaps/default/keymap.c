@@ -15,11 +15,11 @@ enum layer_names {
 const int fretboard[3][14] = {
     { KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET, KC_BACKSLASH },
     { KC_CAPS_LOCK, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_QUOTE, KC_ENTER, KC_NO },
-    { KC_LEFT_SHIFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_RIGHT_SHIFT, KC_NO, KC_NO }
+    { KC_LEFT_SHIFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_RIGHT_SHIFT, KC_BACKSPACE, KC_NO }
 };
 
 // define how many keys are in each row on the fretboard
-const int num_frets[] = { 14, 13, 12 };
+const int num_frets[] = { 14, 13, 13 };
 
 const int strumbar_row[] = { 0, 1, 0, 2, 1, 2 };
 
@@ -138,7 +138,7 @@ void unregister_space(void) {
 void register_space(void) {
   for (int i = 0; i <= 2; i++) {
     if (is_strum_held(i) && get_highest_fret(i) < 0) { // if playing open string
-      if (get_highest_layer(layer_state) == NOSUS) { tap_code(KC_SPACE); }
+      if (IS_LAYER_ON(NOSUS)) { tap_code(KC_SPACE); }
       else { register_code(KC_SPACE); }
       return;
     }
@@ -152,7 +152,7 @@ void register_fret(int row, int col) {
 
   // unregister any other frets that might be held or unregister all if no sustain
   for (int f = 0; f < num_frets[row]; f++) {
-    if (f != col || get_highest_layer(layer_state) == NOSUS) { unregister_code(fretboard[row][f]); }
+    if (f != col || IS_LAYER_ON(NOSUS)) { unregister_code(fretboard[row][f]); }
   }
 }
 
@@ -176,7 +176,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     // only run when not on "normal" typing layer
-    if (get_highest_layer(layer_state) == NORMAL || get_highest_layer(layer_state) == CONFIG) { return true; }
+    if (IS_LAYER_ON(NORMAL) || IS_LAYER_ON(CONFIG)) { return true; }
 
     if (record->event.key.row >= 0 && record->event.key.row <= 2) {
       // ignore event if it's on a lower fret than what's currently held
@@ -266,9 +266,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______
     ),
     [NORMAL] = LAYOUT(
-        KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC,
+        KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSLS
         KC_CAPS, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT, KC_ENT ,
-        KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, _______,
+        KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, KC_BSPC,
         KC_DOWN, KC_UP  ,
         KC_RGHT, KC_LEFT,
         KC_SPC , KC_SPC ,
