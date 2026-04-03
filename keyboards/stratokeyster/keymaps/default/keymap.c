@@ -21,11 +21,11 @@ const int fretboard[3][14] = {
 // define how many keys are in each row on the fretboard
 const int num_frets[] = { 14, 13, 13 };
 
+// gives the row number given strum bar col
 const int strumbar_row[] = { 0, 1, 0, 2, 1, 2 };
 
 // returns the highest held fret for specified row
 int get_highest_fret(int row) {
-
   // iterate through each row and return the right-most pressed key
   for (int c = num_frets[row]-1; c >= 0; c--) {
     if (matrix_is_on(row, c)) {
@@ -39,8 +39,8 @@ int get_highest_fret(int row) {
 }
 
 // returns whether specified row should be considered held down or not
-bool is_strum_held(int r) {
-  switch(r) {
+bool is_strum_held(int row) {
+  switch(row) {
     case 0:
       if (matrix_is_on(3,0) || matrix_is_on(3,2)) { return true; }
       break;
@@ -54,7 +54,7 @@ bool is_strum_held(int r) {
   return false;
 }
 
-// get what position the pu selector is currently in
+// get what position the pickup selector is currently in
 int get_pickup_selector_pos(void) {
   if (!matrix_is_on(3,7)) {
     if (matrix_is_on(3,6)) { return 0; }
@@ -74,7 +74,6 @@ void set_pickup_selector_mods(int pos) {
     neck | mid + neck | middle | mid + bridge | bridge
     GUI  | CTRL+ALT   | ALT    | CTRL         | none
   */
-
 
   // TODO: figure out why set_mods doesn't work for pos 3 and 1
 
@@ -117,6 +116,7 @@ void set_pickup_selector_mods(int pos) {
   //set_mods(mods);
 }
 
+// unregister entire row
 void unregister_row(int row) {
   for (int f = 0; f < num_frets[row]; f++) {
     unregister_code(fretboard[row][f]);
@@ -188,10 +188,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // figure out which row to interact with
     //   (strumbars are on row 3 but interact with rows 0-2)
-    int r = -1;
-    if (record->event.key.row == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row[record->event.key.col]; }
-    else { r = record->event.key.row; }
-
+    int r = record->event.key.row;
+    // if row corresponds to strum bar, set to its corresponding row
+    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row[record->event.key.col]; }
 
     if (record->event.pressed) {
       if (is_strum_held(r)) {
@@ -214,7 +213,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           register_fret(r, get_highest_fret(r));
         } else { // no fret held -- unregister all frets
           unregister_row(r);
-          register_space();
+          register_space(); // revert back to space since a strum bar is held
         }
 
       } else { // if strum bar is not held, release all keys
@@ -266,7 +265,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______
     ),
     [NORMAL] = LAYOUT(
-        KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSLS
+        KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSLS,
         KC_CAPS, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT, KC_ENT ,
         KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, KC_BSPC,
         KC_DOWN, KC_UP  ,
