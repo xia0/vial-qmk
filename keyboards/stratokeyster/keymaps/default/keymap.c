@@ -22,7 +22,14 @@ const int fretboard[3][14] = {
 const int num_frets[] = { 14, 13, 13 };
 
 // gives the row number given strum bar col
-const int strumbar_row[] = { 0, 1, 0, 2, 1, 2 };
+/*
+  \ 3,0 \______
+   \ 3,1 \ 3,2 \
+    \ 3,3 \ 3,4 \ row 0
+           \ 3,5 \ row 1
+                    row 2
+*/
+const int strumbar_row_from_col[] = { 0, 1, 0, 2, 1, 2 };
 
 // returns the highest held fret for specified row
 int get_highest_fret(int row) {
@@ -34,7 +41,6 @@ int get_highest_fret(int row) {
     }
   }
 
-  //xprintf("open fret for row %d\n", row);
   return -1;
 }
 
@@ -190,7 +196,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //   (strumbars are on row 3 but interact with rows 0-2)
     int r = record->event.key.row;
     // if row corresponds to strum bar, set to its corresponding row
-    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row[record->event.key.col]; }
+    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row_from_col[record->event.key.col]; }
 
     if (record->event.pressed) {
       if (is_strum_held(r)) {
@@ -290,17 +296,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 #ifdef ENCODER_ENABLE
-bool encoder_update_kb(uint8_t index, bool clockwise) {
-    if (!encoder_update_user(index, clockwise)) {
-        return false;
-    }
+bool encoder_update_user(uint8_t index, bool clockwise) {
 
-    if (clockwise) {
-        tap_code_delay(KC_VOLU, 10);
-    } else {
-        tap_code_delay(KC_VOLD, 10);
-    }
+  if (clockwise) { tap_code_delay(KC_VOLU, 10); }
+  else { tap_code_delay(KC_VOLD, 10); }
 
-    return true;
+  return true;
 }
 #endif
