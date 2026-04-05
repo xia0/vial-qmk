@@ -3,6 +3,16 @@
 
 #include QMK_KEYBOARD_H
 
+// EEPROM
+typedef union {
+  uint32_t raw;
+  struct {
+    bool backspace_replace_backslash :1;
+  };
+} user_config_t;
+
+user_config_t user_config;
+
 enum layer_names {
     DEFAULT,
     NOSUS,
@@ -11,8 +21,8 @@ enum layer_names {
     CONFIG
 };
 
-// "keymap" of the lowest layer
-const int fretboard[3][14] = {
+// "keymap" of the fretboard
+int fretboard[3][14] = {
     { KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET, KC_BACKSLASH },
     { KC_CAPS_LOCK, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_QUOTE, KC_ENTER, KC_NO },
     { KC_LEFT_SHIFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_RIGHT_SHIFT, KC_BACKSPACE, KC_NO }
@@ -44,7 +54,7 @@ int get_highest_fret(int row) {
   return -1;
 }
 
-// returns whether specified row should be considered held down or not
+// returns whether strumbar of specified row should be considered held down or not
 bool is_strum_held(int row) {
   switch(row) {
     case 0:
@@ -158,16 +168,21 @@ void register_fret(int row, int col) {
 
   // unregister any other frets that might be held or unregister all if no sustain
   for (int f = 0; f < num_frets[row]; f++) {
-    if (f != col || IS_LAYER_ON(NOSUS)) { unregister_code(fretboard[row][f]); }
+    if (f != col || IS_LAYER_ON(NOSUS)) {
+      unregister_code(fretboard[row][f]);
+    }
   }
 }
 
-
+// update fretboard array from config
+void update_fretboard(void) {
+  if (user_config.backspace_replace_backslash) { fretboard[0][13] = KC_BACKSPACE; }
+  else { fretboard[0][13] = KC_BACKSLASH; }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
-    xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
 
     // process pickup position
     if (record->event.key.row == 3 &&
@@ -179,10 +194,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     ) {
       xprintf("PU: %u\n", get_pickup_selector_pos());
       set_pickup_selector_mods(get_pickup_selector_pos());
+      return true;
     }
 
-    // only run when not on "normal" typing layer
-    if (IS_LAYER_ON(NORMAL) || IS_LAYER_ON(CONFIG)) { return true; }
+    // check if user is configuring
+    if (IS_LAYER_ON(CONFIG)) {
+      // backslash as backspace
+      if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
+        user_config.backspace_replace_backslash = !user_config.backspace_replace_backslash;
+        xprintf("CONFIG: backspace replaces backslash: %u\n", user_config.backspace_replace_backslash);
+        return false;
+      }
+      return true;
+    }
+
+    // remap backslash on normal typing keymap
+    if (IS_LAYER_ON(NORMAL)) {
+      if (record->event.key.row == 0 && record->event.key.col == 13) { // backslash
+        if (record->event.pressed) { register_code(fretboard[0][13]); }
+        else { unregister_code(fretboard[0][13]); }
+        return false;
+      }
+      return true;
+    }
+
+    // process fretboard
 
     if (record->event.key.row >= 0 && record->event.key.row <= 2) {
       // ignore event if it's on a lower fret than what's currently held
@@ -196,7 +232,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //   (strumbars are on row 3 but interact with rows 0-2)
     int r = record->event.key.row;
     // if row corresponds to strum bar, set to its corresponding row
-    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) { r = strumbar_row_from_col[record->event.key.col]; }
+    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) {
+      r = strumbar_row_from_col[record->event.key.col];
+      xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
+    }
+    if (r == 3) { return true; } // if r is still 3, likely not fret or strum bar
 
     if (record->event.pressed) {
       if (is_strum_held(r)) {
@@ -209,10 +249,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
     else { // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
-
       // only unregister spacebar if NONE of the strum bars are held
       unregister_space();
-
       // check if a lower fret is still held
       if (is_strum_held(r)) { // only check if a key should be pressed if the strum bar is pressed
         if (get_highest_fret(r) >= 0) {
@@ -230,8 +268,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+
+user_config_t user_config_previous; // save existing config to compare for changes
+
+void keyboard_post_init_user(void) {
+  // Read the user config from EEPROM
+  user_config.raw = eeconfig_read_user();
+  user_config_previous.raw = user_config.raw;
+  update_fretboard();
+}
+
+
+bool config_layer_on; // saves state of config layer
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-  layer_debug();
+
+  // check if we are on config layer
+  if (IS_LAYER_ON_STATE(state, CONFIG)) {
+    xprintf("CONFIG layer active\n");
+    config_layer_on = true;
+  }
+  else { // save config to EEPROM when switching off config layer
+    if (config_layer_on) {
+      if (user_config.raw != user_config_previous.raw) {  // only save to EEPROM if config has changed
+        eeconfig_update_user(user_config.raw);
+        user_config_previous.raw = user_config.raw;
+        xprintf("config has changed. saving to EEPROM...\n");
+        update_fretboard();
+      }
+      config_layer_on = false;
+    }
+  }
+
+  //layer_debug();
   return state;
 }
 
