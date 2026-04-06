@@ -27,7 +27,7 @@ guitar hero mechanical keyboard
 |3d printed parts||
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_\
-_^ or combination of pins that add up_
+_^ or combination of pins that add up_\
 _# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._
 
 ## pick guard wiring
@@ -48,8 +48,11 @@ _# for tuning strum bar clearance. you could also use a 3d printed washer, bits 
 - 3 -> col 11
 - 4 -> col 10
 
+### free pins
+there is capacity for two more switches on matrix positions 1,13 and 2,13.
+
 ## usage
-#### pickup selector (mods)
+#### pickup selector (mods) defaults
 | neck | neck + mid | middle | bridge + mid | bridge |
 |---|---|---|---|---|
 | gui | ctrl + alt | alt | ctrl | none |
@@ -61,17 +64,20 @@ _# for tuning strum bar clearance. you could also use a 3d printed washer, bits 
 #### rotary switch
 | pos 1 (ccw) | pos 2 | pos 3 | pos 4 (cw) |
 |---|---|---|---|
-| config | normal typing | no sustain | sustain |
+| config | normal typing | no sustain (no key repeats) | sustain |
 
-#### config layer
+### config layer
 |control|function|
 |---|---|
 |encoder push button|bootloader|
 |backslash|toggle between backslash or backspace|
 |tab|toggle between tab or escape|
 |r|reset eeprom|
-mods can be changed by selecting the pickup position, hold the desired mods and press the strumbar closest to you.
+
+#### edit mods
+mods can be changed by selecting the pickup position, hold the desired mods and press the strumbar closest to you to set.
 |left shift|z|x|c|,|.|/|right shift|
 |---|---|---|---|---|---|---|---|
 |left shift|left ctrl|left gui|left alt|right alt|right gui|right ctrl|right shift|
+
 switch off the config layer to save.
