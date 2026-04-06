@@ -3,15 +3,39 @@
 
 #include QMK_KEYBOARD_H
 
-// EEPROM
+// define EEPROM vars
 typedef union {
   uint32_t raw;
   struct {
-    bool backspace_replace_backslash :1;
+    bool backspace_replaces_backslash :1;
+    bool escape_replaces_tab :1;
+    uint8_t mods_for_pickup_pos_0 :8;
+    uint8_t mods_for_pickup_pos_1 :8;
+    uint8_t mods_for_pickup_pos_2 :8;
+    uint8_t mods_for_pickup_pos_3 :8;
+    uint8_t mods_for_pickup_pos_4 :8;
   };
 } user_config_t;
 
 user_config_t user_config;
+
+// EEPROM reset - default settings
+/* default mods
+  0    | 1          | 2      | 3            | 4
+  neck | mid + neck | middle | mid + bridge | bridge
+  GUI  | CTRL+ALT   | ALT    | CTRL         | none
+*/
+void eeconfig_init_user(void) {
+  user_config.raw = 0;
+  user_config.backspace_replaces_backslash = false;
+  user_config.escape_replaces_tab = false;
+  user_config.mods_for_pickup_pos_0 = (MOD_BIT(KC_RIGHT_GUI));
+  user_config.mods_for_pickup_pos_1 = (MOD_BIT(KC_RIGHT_CTRL) | MOD_BIT(KC_RIGHT_ALT));
+  user_config.mods_for_pickup_pos_2 = (MOD_BIT(KC_RIGHT_ALT));
+  user_config.mods_for_pickup_pos_3 = (MOD_BIT(KC_RIGHT_CTRL));
+  user_config.mods_for_pickup_pos_4 = 0;
+  eeconfig_update_user(user_config.raw); // Write default value to EEPROM now
+}
 
 enum layer_names {
     DEFAULT,
@@ -21,7 +45,7 @@ enum layer_names {
     CONFIG
 };
 
-// "keymap" of the fretboard
+// default "keymap" of the fretboard
 int fretboard[3][14] = {
     { KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LEFT_BRACKET, KC_RIGHT_BRACKET, KC_BACKSLASH },
     { KC_CAPS_LOCK, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SEMICOLON, KC_QUOTE, KC_ENTER, KC_NO },
@@ -50,7 +74,6 @@ int get_highest_fret(int row) {
       return c;
     }
   }
-
   return -1;
 }
 
@@ -86,50 +109,29 @@ int get_pickup_selector_pos(void) {
 
 // press the mods corresponding to pu pos
 void set_pickup_selector_mods(int pos) {
-  /*
-    neck | mid + neck | middle | mid + bridge | bridge
-    GUI  | CTRL+ALT   | ALT    | CTRL         | none
-  */
-
-  // TODO: figure out why set_mods doesn't work for pos 3 and 1
-
-  //int mods = 0;
-  //xprintf("setting mod state to PU pos: %u, bitmask \n", mods);
+  int mods = 0;
 
   switch(pos) {
     case 0:
-      //mods = (MOD_BIT(KC_RIGHT_GUI));
-      register_code(KC_RIGHT_GUI);
-      unregister_code(KC_RIGHT_CTRL);
-      unregister_code(KC_RIGHT_ALT);
+      mods = user_config.mods_for_pickup_pos_0;
       break;
     case 1:
-      //mods = (MOD_BIT(KC_RIGHT_CTRL) | MOD_BIT(KC_RIGHT_ALT));
-      unregister_code(KC_RIGHT_GUI);
-      register_code(KC_RIGHT_CTRL);
-      register_code(KC_RIGHT_ALT);
+      mods = user_config.mods_for_pickup_pos_1;
       break;
     case 2:
-      //mods = (MOD_BIT(KC_RIGHT_ALT));
-      unregister_code(KC_RIGHT_GUI);
-      unregister_code(KC_RIGHT_CTRL);
-      register_code(KC_RIGHT_ALT);
+      mods = user_config.mods_for_pickup_pos_2;
       break;
     case 3:
-      //mods = (MOD_BIT(KC_RIGHT_CTRL));
-      unregister_code(KC_RIGHT_GUI);
-      register_code(KC_RIGHT_CTRL);
-      unregister_code(KC_RIGHT_ALT);
+      mods = user_config.mods_for_pickup_pos_3;
       break;
     case 4:
-      //clear_mods();
-      unregister_code(KC_RIGHT_GUI);
-      unregister_code(KC_RIGHT_CTRL);
-      unregister_code(KC_RIGHT_ALT);
+      mods = user_config.mods_for_pickup_pos_4;
       break;
   }
 
-  //set_mods(mods);
+  xprintf("PU pos: %u setting mod state to: %u\n", pos, mods);
+  unregister_mods(get_mods());
+  register_mods(mods);
 }
 
 // unregister entire row
@@ -174,15 +176,62 @@ void register_fret(int row, int col) {
   }
 }
 
+// update mods based on pickup selector pos
+void update_mods(void) {
+  set_pickup_selector_mods(get_pickup_selector_pos());
+}
+
 // update fretboard array from config
 void update_fretboard(void) {
-  if (user_config.backspace_replace_backslash) { fretboard[0][13] = KC_BACKSPACE; }
+  if (user_config.backspace_replaces_backslash) { fretboard[0][13] = KC_BACKSPACE; }
   else { fretboard[0][13] = KC_BACKSLASH; }
+
+  if (user_config.escape_replaces_tab) { fretboard[0][0] = KC_ESCAPE; }
+  else { fretboard[0][0] = KC_TAB; }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+    //xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+
+    // check if user is configuring
+    if (IS_LAYER_ON(CONFIG)) {
+      // backslash as backspace
+      if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
+        user_config.backspace_replaces_backslash = !user_config.backspace_replaces_backslash;
+        xprintf("CONFIG: backspace replaces backslash: %u\n", user_config.backspace_replaces_backslash);
+        return false;
+      }
+      // escape as tab
+      else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 0) {
+        user_config.escape_replaces_tab = !user_config.escape_replaces_tab;
+        xprintf("CONFIG: escape replaces tab: %u\n", user_config.escape_replaces_tab);
+        return false;
+      }
+      // mods (row 2 strumbar) -- save currently held mods to current pickup position
+      else if (record->event.pressed && record->event.key.row == 3 && is_strum_held(2)) {
+        xprintf("CONFIG: mods for pickup pos %u set to %u\n", get_pickup_selector_pos(), get_mods());
+        switch(get_pickup_selector_pos()) {
+          case 0:
+            user_config.mods_for_pickup_pos_0 = get_mods();
+            break;
+          case 1:
+            user_config.mods_for_pickup_pos_1 = get_mods();
+            break;
+          case 2:
+            user_config.mods_for_pickup_pos_2 = get_mods();
+            break;
+          case 3:
+            user_config.mods_for_pickup_pos_3 = get_mods();
+            break;
+          case 4:
+            user_config.mods_for_pickup_pos_4 = get_mods();
+            break;
+        }
+        return false;
+      }
+      return true;
+    }
 
     // process pickup position
     if (record->event.key.row == 3 &&
@@ -192,27 +241,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           record->event.key.col == 8
         )
     ) {
-      xprintf("PU: %u\n", get_pickup_selector_pos());
-      set_pickup_selector_mods(get_pickup_selector_pos());
+      update_mods();
       return true;
     }
 
-    // check if user is configuring
-    if (IS_LAYER_ON(CONFIG)) {
-      // backslash as backspace
-      if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
-        user_config.backspace_replace_backslash = !user_config.backspace_replace_backslash;
-        xprintf("CONFIG: backspace replaces backslash: %u\n", user_config.backspace_replace_backslash);
-        return false;
-      }
-      return true;
-    }
-
-    // remap backslash on normal typing keymap
+    // type normally (without strumbars)
     if (IS_LAYER_ON(NORMAL)) {
-      if (record->event.key.row == 0 && record->event.key.col == 13) { // backslash
-        if (record->event.pressed) { register_code(fretboard[0][13]); }
-        else { unregister_code(fretboard[0][13]); }
+      if (record->event.key.row >= 0 && record->event.key.row <= 2) { // backslash
+        if (record->event.pressed) { register_code(fretboard[record->event.key.row][record->event.key.col]); }
+        else { unregister_code(fretboard[record->event.key.row][record->event.key.col]); }
         return false;
       }
       return true;
@@ -278,15 +315,14 @@ void keyboard_post_init_user(void) {
   update_fretboard();
 }
 
-
-bool config_layer_on; // saves state of config layer
-
 layer_state_t layer_state_set_user(layer_state_t state) {
+  static bool config_layer_on; // saves state of config layer
 
   // check if we are on config layer
   if (IS_LAYER_ON_STATE(state, CONFIG)) {
-    xprintf("CONFIG layer active\n");
+    xprintf("CONFIG layer activated\n");
     config_layer_on = true;
+    unregister_mods(get_mods());
   }
   else { // save config to EEPROM when switching off config layer
     if (config_layer_on) {
@@ -296,6 +332,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         xprintf("config has changed. saving to EEPROM...\n");
         update_fretboard();
       }
+      else {
+        xprintf("No changes to config detected...\n");
+      }
+      update_mods();
       config_layer_on = false;
     }
   }
@@ -340,9 +380,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______
     ),
     [NORMAL] = LAYOUT(
-        KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSLS,
-        KC_CAPS, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT, KC_ENT ,
-        KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, KC_BSPC,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_DOWN, KC_UP  ,
         KC_RGHT, KC_LEFT,
         KC_SPC , KC_SPC ,
@@ -351,9 +391,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______
     ),
     [CONFIG] = LAYOUT(
-        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO, KC_NO, KC_NO, KC_NO, EE_CLR, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_LEFT_SHIFT, KC_LEFT_CTRL, KC_LEFT_GUI, KC_LEFT_ALT, KC_NO, KC_NO, KC_NO, KC_NO, KC_RIGHT_ALT, KC_RIGHT_GUI, KC_RIGHT_CTRL, KC_RIGHT_SHIFT, KC_NO,
         KC_NO, KC_NO,
         KC_NO, KC_NO,
         KC_NO, KC_NO,

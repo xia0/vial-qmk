@@ -4,11 +4,12 @@ guitar hero mechanical keyboard
 ## bom
 |item|qty|
 |---|---|
-|M3 x 10~20 mm bolt*|14|
+|M3 x 10~12 mm bolt*|14|
 |M3 x 30 mm bolt*|4|
 |M3 x 80 mm bolt|3|
 |M3 nyloc nut|3|
 |M3 heat set insert 5 mm OD x 5 mm L|18|
+|M3 washer#|0~8|
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
@@ -27,6 +28,7 @@ guitar hero mechanical keyboard
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_\
 _^ or combination of pins that add up_
+_# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._
 
 ## pick guard wiring
 #### pickup selector
@@ -61,5 +63,15 @@ _^ or combination of pins that add up_
 |---|---|---|---|
 | config | normal typing | no sustain | sustain |
 
-#### bootloader
-accesss bootloader by switching the keyboard into the "config" layer and push the rotary encoder
+#### config layer
+|control|function|
+|---|---|
+|encoder push button|bootloader|
+|backslash|toggle between backslash or backspace|
+|tab|toggle between tab or escape|
+|r|reset eeprom|
+mods can be changed by selecting the pickup position, hold the desired mods and press the strumbar closest to you.
+|left shift|z|x|c|,|.|/|right shift|
+|---|---|---|---|---|---|---|---|
+|left shift|left ctrl|left gui|left alt|right alt|right gui|right ctrl|right shift|
+switch off the config layer to save.
