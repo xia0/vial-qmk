@@ -5,12 +5,15 @@
 #include "dynamic_keymap.h"
 
 // define EEPROM vars
+// TODO figure out how to store more than 32 bits into eeprom
 typedef union {
   uint64_t raw;
   struct {
+    bool simple_mode: 1;
     bool backspace_replaces_backslash :1;
     bool escape_replaces_tab :1;
-    uint8_t mods_for_pickup_pos_0 :4;
+    bool spinal_tap :1;
+    uint8_t mods_for_pickup_pos_0 :4; // using 8 bit int but take up 4 bits. these need to be at the end
     uint8_t mods_for_pickup_pos_1 :4;
     uint8_t mods_for_pickup_pos_2 :4;
     uint8_t mods_for_pickup_pos_3 :4;
@@ -20,21 +23,23 @@ typedef union {
 
 user_config_t user_config;
 
-// EEPROM reset - BASE settings
-/* BASE mods
+// EEPROM reset - default settings
+/*
   0    | 1          | 2      | 3            | 4
   neck | mid + neck | middle | mid + bridge | bridge
   GUI  | CTRL+ALT   | ALT    | CTRL         | none
 */
 void eeconfig_init_user(void) {
   user_config.raw = 0;
+  user_config.mods_for_pickup_pos_4 = 0;
+  user_config.simple_mode = false;
   user_config.backspace_replaces_backslash = false;
   user_config.escape_replaces_tab = false;
+  user_config.spinal_tap = false;
   user_config.mods_for_pickup_pos_0 = (MOD_BIT(KC_LEFT_GUI));
   user_config.mods_for_pickup_pos_1 = (MOD_BIT(KC_LEFT_CTRL) | MOD_BIT(KC_LEFT_ALT));
   user_config.mods_for_pickup_pos_2 = (MOD_BIT(KC_LEFT_ALT));
   user_config.mods_for_pickup_pos_3 = (MOD_BIT(KC_LEFT_CTRL));
-  user_config.mods_for_pickup_pos_4 = 0;
   eeconfig_update_user(user_config.raw); // Write BASE value to EEPROM now
 }
 
@@ -43,11 +48,11 @@ void eeconfig_init_user(void) {
 const int num_frets[] = { 14, 13, 13 };
 
 enum layer_names {
-    BASE,
-    NOSUS,
-    NUMBER,
-    NORMAL,
-    CONFIG
+  BASE,
+  NOSUS,
+  NUMBER,
+  NORMAL,
+  CONFIG
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -258,6 +263,19 @@ void register_space(void) {
 
 // register keycode corresponding to fret
 void register_fret(int row, int col) {
+
+  // spinal tap mode
+  if (user_config.spinal_tap && IS_LAYER_ON(NUMBER) && row == 0) {
+    switch(col) {
+      case 11:
+        SEND_STRING("11");
+        return;
+      case 10:
+        SEND_STRING("10");
+        return;
+    }
+  }
+
   register_code(get_fret_keycode(row, col));
 
   // unregister any other frets that might be held or unregister all if no sustain
@@ -274,20 +292,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // check if user is configuring
     if (IS_LAYER_ON(CONFIG)) {
-      // backslash as backspace
+      // toggle backslash as backspace
       if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
         user_config.backspace_replaces_backslash = !user_config.backspace_replaces_backslash;
         xprintf("CONFIG: backspace replaces backslash set to %u\n", user_config.backspace_replaces_backslash);
         return false;
       }
-      // escape as tab
+      // toggle escape as tab
       else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 0) {
         user_config.escape_replaces_tab = !user_config.escape_replaces_tab;
         xprintf("CONFIG: escape replaces tab set to %u\n", user_config.escape_replaces_tab);
         return false;
       }
-      // mods (row 2 strumbar) -- save currently held mods to current pickup position
-      else if (record->event.pressed && record->event.key.row == 3 && is_strum_held(2)) {
+      // these amps go to 11
+      else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 11) {
+        user_config.spinal_tap = !user_config.spinal_tap;
+        xprintf("CONFIG: these amps go to 1%u\n", user_config.spinal_tap);
+        return false;
+      }
+      // toggle simple mode
+      else if (record->event.pressed && record->event.key.row == 3 && (record->event.key.col == 1 || record->event.key.col == 4)) {
+        user_config.simple_mode = !user_config.simple_mode;
+        xprintf("CONFIG: simple mode set to %u\n", user_config.simple_mode);
+        return false;
+      }
+      // enter - save currently held mods to current pickup position
+      else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 12) {
         xprintf("CONFIG: mods for pickup pos %u set to %u\n", get_pickup_selector_pos(), get_mods());
         switch(get_pickup_selector_pos()) {
           case 0:
@@ -344,7 +374,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.key.col < get_highest_fret(record->event.key.row)) { return false; }
 
       // ignore fret press if strumbar not pressed on that row
-      if (!is_strum_held(record->event.key.row)) { return false; }
+      if (!is_strum_held(record->event.key.row) && !user_config.simple_mode) { return false; }
 
       // check if pressed key is out of bounds of fretboard (e.g. 1,13 and 2,13)
       if (record->event.key.col >= num_frets[record->event.key.row]) { return true; }
@@ -355,12 +385,59 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     int r = record->event.key.row;
     // if row corresponds to strum bar, set to its corresponding row
     if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) {
+
+      // ignore strum bars on row 0 and 2 if simple mode
+      if (user_config.simple_mode && !(record->event.key.col == 1 || record->event.key.col == 4)) { return false; }
+
       r = strumbar_row_from_col[record->event.key.col];
       //xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
     }
     if (r == 3) { return true; } // if r is still 3, likely not fret or strum bar
 
+
+    // process keypresses for simple mode
+    if (user_config.simple_mode) {
+      bool is_fretted = false;
+      if (record->event.pressed) {
+        if (is_strum_held(1)) {
+          for (int i = 0; i <= 2; i++) {
+            if (get_highest_fret(i) >= 0) {
+              unregister_code(KC_SPACE);
+              register_fret(i, get_highest_fret(i));
+              is_fretted = true;
+            }
+          }
+          if (!is_fretted) {
+            register_space();
+          }
+        }
+      }
+      else {
+        unregister_space();
+        for (int i = 0; i <= 2; i++) {
+          // check if a lower fret is still held
+          if (is_strum_held(1)) { // only check if a key should be pressed if the strum bar is pressed
+            if (get_highest_fret(i) >= 0) {
+              register_fret(i, get_highest_fret(i));
+              is_fretted = true;
+            } else { // no fret held -- unregister all frets
+              unregister_row(i);
+            }
+          } else { // if strum bar is not held, release all keys
+            unregister_row(i);
+          }
+        }
+        if (!is_fretted) {
+          register_space();
+        }
+      }
+      return false;
+    }
+
+
+    // process keypresses for normal mode
     if (record->event.pressed) {
+
       if (is_strum_held(r)) {
         if (get_highest_fret(r) >= 0) { // fret is held
           unregister_space();
@@ -405,11 +482,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   // check if we are on config layer
   if (IS_LAYER_ON_STATE(state, CONFIG)) {
     user_config_previous.raw = user_config.raw; // save existing config to compare for changes
+    unregister_row(0);
+    unregister_row(1);
+    unregister_row(2);
+    unregister_space();
     xprintf("CONFIG layer activated\n");
 
     xprintf("current settings:\n");
+    xprintf("- simple mode: %u\n", user_config_previous.simple_mode);
     xprintf("- backspace_replaces_backslash: %u\n", user_config_previous.backspace_replaces_backslash);
     xprintf("- escape_replaces_tab: %u\n", user_config_previous.escape_replaces_tab);
+    xprintf("- these amps go to 1%u\n", user_config_previous.spinal_tap);
     xprintf("- mods_for_pickup_pos_0: %u\n", user_config_previous.mods_for_pickup_pos_0);
     xprintf("- mods_for_pickup_pos_1: %u\n", user_config_previous.mods_for_pickup_pos_1);
     xprintf("- mods_for_pickup_pos_2: %u\n", user_config_previous.mods_for_pickup_pos_2);

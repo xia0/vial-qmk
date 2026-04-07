@@ -64,20 +64,24 @@ there is capacity for two more switches on matrix positions 1,13 and 2,13.
 #### rotary switch
 | pos 1 (ccw) | pos 2 | pos 3 | pos 4 (cw) |
 |---|---|---|---|
-| config | normal typing | no sustain (no key repeats) | sustain |
+| config | normal typing | strum typing | numbers |
 
 ### config layer
 |control|function|
 |---|---|
-|encoder push button|bootloader|
+|middle strum bar|toggle between simple mode and normal mode*|
 |backslash|toggle between backslash or backspace|
 |tab|toggle between tab or escape|
+|minus|???|
+|encoder push button|bootloader|
 |r|reset eeprom|
 
+_* in simple mode, only the middle strum bar is active._
+
 #### edit mods
-mods can be changed by selecting the pickup position, hold the desired mods and press the strum bar closest to you to set.
+mods can be changed by selecting the pickup position, hold the desired mods and press enter to set.
 |left shift|z|x|c|
 |---|---|---|---|
 |left shift|left ctrl|left gui|left alt|
 
-switch off the config layer to save.
+switch off the config layer to save to eeprom.
