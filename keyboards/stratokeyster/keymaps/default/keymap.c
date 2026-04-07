@@ -192,21 +192,11 @@ void set_pickup_selector_mods(int pos) {
   int mods = 0;
 
   switch(pos) {
-    case 0:
-      mods = user_config.mods_for_pickup_pos_0;
-      break;
-    case 1:
-      mods = user_config.mods_for_pickup_pos_1;
-      break;
-    case 2:
-      mods = user_config.mods_for_pickup_pos_2;
-      break;
-    case 3:
-      mods = user_config.mods_for_pickup_pos_3;
-      break;
-    case 4:
-      mods = user_config.mods_for_pickup_pos_4;
-      break;
+    case 0: mods = user_config.mods_for_pickup_pos_0; break;
+    case 1: mods = user_config.mods_for_pickup_pos_1; break;
+    case 2: mods = user_config.mods_for_pickup_pos_2; break;
+    case 3: mods = user_config.mods_for_pickup_pos_3; break;
+    case 4: mods = user_config.mods_for_pickup_pos_4; break;
   }
 
   xprintf("PU pos: %u setting mod state to: %u\n", pos, mods);
@@ -346,8 +336,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // type normally (without strumbars)
   if (IS_LAYER_ON(NORMAL)) {
     // check if keycode substitution is required
-    //if (keycode != get_fret_keycode(record->event.key.row, record->event.key.col)) {
-    if (record->event.key.row >= 0 && record->event.key.row <= 2 && record->event.key.col < num_frets[record->event.key.row]) {
+
+    // only check for keys on the fretboard
+    if (IS_QK_BASIC(keycode) && record->event.key.row >= 0 && record->event.key.row <= 2 && record->event.key.col < num_frets[record->event.key.row]) {
       if (record->event.pressed) { register_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
       else { unregister_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
       return false;
