@@ -9,29 +9,26 @@ guitar hero mechanical keyboard
 |M3 x 80 mm bolt|3|
 |M3 nyloc nut|3|
 |M3 heat set insert 5 mm OD x 5 mm L|18|
-|M3 washer<sup>#</sup>|0~8|
+|M3 washer#|0~8|
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
-|18 pin 2.54 mm pitch angled connector male<sup>^</sup>|1|
-|18 pin 2.54 mm pitch dupont cable female end ~5 cm<sup>^</sup>|1|
+|18 pin 2.54 mm pitch angled connector male^|1|
+|18 pin 2.54 mm pitch dupont cable female end ~5 cm^|1|
 |usb breakout board male (to match your pico)|1|
 |usb breakout board female (to match your lead)|1|
 |mx switch for fretboard|39-40|
-|mx switch for bridge|1|
-|mx switch for strumbars†|6|
-|2u pcb mount stab|2-3|
-|2u plate mount stab|1|
+|mx switch for strumbars|6|
+|2u stabs|2-3|
 |raspberry pi pico|1|
 |fretboard pcb|1|
 |fretboard plate|1|
 |strumbar pcb|1|
 |3d printed parts||
 
-_\* phillips head silver colour bolts recommended for aesthetic reasons._\
-_^ alternatively, use a combination of pins that add up to 18 pins._\
-_# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._\
-_† heavy and clicky recommended for strum bars._
+_\* phillips head silver colour bolts recommended for aesthetic reasons_\
+_^ or combination of pins that add up_\
+_# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._
 
 ## pick guard wiring
 #### pickup selector
@@ -51,8 +48,8 @@ _† heavy and clicky recommended for strum bars._
 - 3 -> col 11
 - 4 -> col 10
 
-#### bridge switch
-row 1, col 13
+### free pins
+there is capacity for two more switches on matrix positions 1,13 and 2,13.
 
 ## usage
 #### pickup selector (mods) defaults
@@ -75,7 +72,7 @@ row 1, col 13
 |middle strum bar|toggle between simple mode and normal mode*|
 |backslash|toggle between backslash or backspace|
 |tab|toggle between tab or escape|
-|minus|???|
+|[|???|
 |encoder push button|bootloader|
 |r|reset eeprom|
 

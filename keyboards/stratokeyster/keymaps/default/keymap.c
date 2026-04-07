@@ -288,183 +288,174 @@ void update_mods(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    //xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+  //xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
 
-    // check if user is configuring
-    if (IS_LAYER_ON(CONFIG)) {
-      // toggle backslash as backspace
-      if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
-        user_config.backspace_replaces_backslash = !user_config.backspace_replaces_backslash;
-        xprintf("CONFIG: backspace replaces backslash set to %u\n", user_config.backspace_replaces_backslash);
-        return false;
-      }
-      // toggle escape as tab
-      else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 0) {
-        user_config.escape_replaces_tab = !user_config.escape_replaces_tab;
-        xprintf("CONFIG: escape replaces tab set to %u\n", user_config.escape_replaces_tab);
-        return false;
-      }
-      // these amps go to 11
-      else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 11) {
-        user_config.spinal_tap = !user_config.spinal_tap;
-        xprintf("CONFIG: these amps go to 1%u\n", user_config.spinal_tap);
-        return false;
-      }
-      // toggle simple mode
-      else if (record->event.pressed && record->event.key.row == 3 && (record->event.key.col == 1 || record->event.key.col == 4)) {
-        user_config.simple_mode = !user_config.simple_mode;
-        xprintf("CONFIG: simple mode set to %u\n", user_config.simple_mode);
-        return false;
-      }
-      // enter - save currently held mods to current pickup position
-      else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 12) {
-        xprintf("CONFIG: mods for pickup pos %u set to %u\n", get_pickup_selector_pos(), get_mods());
-        switch(get_pickup_selector_pos()) {
-          case 0:
-            user_config.mods_for_pickup_pos_0 = get_mods();
-            break;
-          case 1:
-            user_config.mods_for_pickup_pos_1 = get_mods();
-            break;
-          case 2:
-            user_config.mods_for_pickup_pos_2 = get_mods();
-            break;
-          case 3:
-            user_config.mods_for_pickup_pos_3 = get_mods();
-            break;
-          case 4:
-            user_config.mods_for_pickup_pos_4 = get_mods();
-            break;
-        }
-        return false;
-      }
-      return true;
+  // check if user is configuring
+  if (IS_LAYER_ON(CONFIG)) {
+    // toggle backslash as backspace
+    if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
+      user_config.backspace_replaces_backslash = !user_config.backspace_replaces_backslash;
+      xprintf("CONFIG: backspace replaces backslash set to %u\n", user_config.backspace_replaces_backslash);
+      return false;
     }
-
-    // process pickup position
-    if (record->event.key.row == 3 &&
-        (
-          record->event.key.col == 6 ||
-          record->event.key.col == 7 ||
-          record->event.key.col == 8
-        )
-    ) {
-      update_mods();
-      return true;
+    // toggle escape as tab
+    else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 0) {
+      user_config.escape_replaces_tab = !user_config.escape_replaces_tab;
+      xprintf("CONFIG: escape replaces tab set to %u\n", user_config.escape_replaces_tab);
+      return false;
     }
-
-    // type normally (without strumbars)
-    if (get_highest_layer(layer_state) >= NORMAL) {
-      // check if keycode substitution is required
-      if (record->event.key.row >= 0 && record->event.key.row <= 2) {
-        if (record->event.pressed) { register_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
-        else { unregister_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
-        return false;
+    // these keyboards go to 11
+    else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 11) {
+      user_config.spinal_tap = !user_config.spinal_tap;
+      xprintf("CONFIG: these keyboards go to 1%u\n", user_config.spinal_tap);
+      return false;
+    }
+    // toggle simple mode
+    else if (record->event.pressed && record->event.key.row == 3 && (record->event.key.col == 1 || record->event.key.col == 4)) {
+      user_config.simple_mode = !user_config.simple_mode;
+      xprintf("CONFIG: simple mode set to %u\n", user_config.simple_mode);
+      return false;
+    }
+    // enter - save currently held mods to current pickup position
+    else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 12) {
+      xprintf("CONFIG: mods for pickup pos %u set to %u\n", get_pickup_selector_pos(), get_mods());
+      switch(get_pickup_selector_pos()) {
+        case 0: user_config.mods_for_pickup_pos_0 = get_mods(); break;
+        case 1: user_config.mods_for_pickup_pos_1 = get_mods(); break;
+        case 2: user_config.mods_for_pickup_pos_2 = get_mods(); break;
+        case 3: user_config.mods_for_pickup_pos_3 = get_mods(); break;
+        case 4: user_config.mods_for_pickup_pos_4 = get_mods(); break;
       }
-
-      return true;
+      return false;
     }
+    return true;
+  }
 
-    // anything below NORMAL layer is triggered using strum bar
-    // process fretboard
+  // process pickup position
+  if (record->event.key.row == 3 &&
+      (
+        record->event.key.col == 6 ||
+        record->event.key.col == 7 ||
+        record->event.key.col == 8
+      )
+  ) {
+    update_mods();
+    return true;
+  }
 
-    // first check if press should be ignored
+  // type normally (without strumbars)
+  if (get_highest_layer(layer_state) >= NORMAL) {
+    // check if keycode substitution is required
     if (record->event.key.row >= 0 && record->event.key.row <= 2) {
-      // ignore event if it's on a lower fret than what's currently held
-      if (record->event.key.col < get_highest_fret(record->event.key.row)) { return false; }
-
-      // ignore fret press if strumbar not pressed on that row
-      if (!is_strum_held(record->event.key.row) && !user_config.simple_mode) { return false; }
-
-      // check if pressed key is out of bounds of fretboard (e.g. 1,13 and 2,13)
-      if (record->event.key.col >= num_frets[record->event.key.row]) { return true; }
+      if (record->event.pressed) { register_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
+      else { unregister_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
+      return false;
     }
 
-    // figure out which row to interact with
-    //   (strumbars are on row 3 but interact with rows 0-2)
-    int r = record->event.key.row;
-    // if row corresponds to strum bar, set to its corresponding row
-    if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) {
+    return true;
+  }
 
-      // ignore strum bars on row 0 and 2 if simple mode
-      if (user_config.simple_mode && !(record->event.key.col == 1 || record->event.key.col == 4)) { return false; }
+  // anything below NORMAL layer is triggered using strum bar
+  // process fretboard
 
-      r = strumbar_row_from_col[record->event.key.col];
-      //xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
-    }
-    if (r == 3) { return true; } // if r is still 3, likely not fret or strum bar
+  // first check if press should be ignored
+  if (record->event.key.row >= 0 && record->event.key.row <= 2) {
+    // ignore event if it's on a lower fret than what's currently held
+    if (record->event.key.col < get_highest_fret(record->event.key.row)) { return false; }
+
+    // ignore fret press if strumbar not pressed on that row
+    if (!is_strum_held(record->event.key.row) && !user_config.simple_mode) { return false; }
+
+    // check if pressed key is out of bounds of fretboard (e.g. 1,13 and 2,13)
+    if (record->event.key.col >= num_frets[record->event.key.row]) { return true; }
+  }
+
+  // figure out which row to interact with
+  //   (strumbars are on row 3 but interact with rows 0-2)
+  int r = record->event.key.row;
+  // if row corresponds to strum bar, set to its corresponding row
+  if (r == 3 && record->event.key.col >= 0 && record->event.key.col <= 5) {
+
+    // ignore strum bars on row 0 and 2 if simple mode
+    if (user_config.simple_mode && !(record->event.key.col == 1 || record->event.key.col == 4)) { return false; }
+
+    r = strumbar_row_from_col[record->event.key.col];
+    //xprintf("SB: %u %u %u\n", is_strum_held(0), is_strum_held(1), is_strum_held(2));
+  }
+  if (r == 3) { return true; } // if r is still 3, likely not fret or strum bar
 
 
-    // process keypresses for simple mode
-    if (user_config.simple_mode) {
-      bool is_fretted = false;
-      if (record->event.pressed) {
-        if (is_strum_held(1)) {
-          for (int i = 0; i <= 2; i++) {
-            if (get_highest_fret(i) >= 0) {
-              unregister_code(KC_SPACE);
-              register_fret(i, get_highest_fret(i));
-              is_fretted = true;
-            }
-          }
-          if (!is_fretted) {
-            register_space();
-          }
-        }
-      }
-      else {
-        unregister_space();
+  // process keypresses for simple mode
+  // TODO refactor this code into non-simple typing
+  if (user_config.simple_mode) {
+    bool is_fretted = false;
+    if (record->event.pressed) {
+      if (is_strum_held(1)) {
         for (int i = 0; i <= 2; i++) {
-          // check if a lower fret is still held
-          if (is_strum_held(1)) { // only check if a key should be pressed if the strum bar is pressed
-            if (get_highest_fret(i) >= 0) {
-              register_fret(i, get_highest_fret(i));
-              is_fretted = true;
-            } else { // no fret held -- unregister all frets
-              unregister_row(i);
-            }
-          } else { // if strum bar is not held, release all keys
-            unregister_row(i);
+          if (get_highest_fret(i) >= 0) {
+            unregister_code(KC_SPACE);
+            register_fret(i, get_highest_fret(i));
+            is_fretted = true;
           }
         }
         if (!is_fretted) {
           register_space();
         }
       }
-      return false;
     }
-
-
-    // process keypresses for normal mode
-    if (record->event.pressed) {
-
-      if (is_strum_held(r)) {
-        if (get_highest_fret(r) >= 0) { // fret is held
-          unregister_space();
-          register_fret(r, get_highest_fret(r));
-        } else { // no fret held - send space
-          register_space();
-        }
-      }
-    }
-    else { // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
-      // only unregister spacebar if NONE of the strum bars are held
+    else {
       unregister_space();
-      // check if a lower fret is still held
-      if (is_strum_held(r)) { // only check if a key should be pressed if the strum bar is pressed
-        if (get_highest_fret(r) >= 0) {
-          register_fret(r, get_highest_fret(r));
-        } else { // no fret held -- unregister all frets
-          unregister_row(r);
-          register_space(); // revert back to space since a strum bar is held
+      for (int i = 0; i <= 2; i++) {
+        // check if a lower fret is still held
+        if (is_strum_held(1)) { // only check if a key should be pressed if the strum bar is pressed
+          if (get_highest_fret(i) >= 0) {
+            register_fret(i, get_highest_fret(i));
+            is_fretted = true;
+          } else { // no fret held -- unregister all frets
+            unregister_row(i);
+          }
+        } else { // if strum bar is not held, release all keys
+          unregister_row(i);
         }
-
-      } else { // if strum bar is not held, release all keys
-        unregister_row(r);
+      }
+      if (!is_fretted) {
+        register_space();
       }
     }
-
     return false;
+  }
+
+
+  // process keypresses for normal mode
+  if (record->event.pressed) {
+
+    if (is_strum_held(r)) {
+      if (get_highest_fret(r) >= 0) { // fret is held
+        unregister_space();
+        register_fret(r, get_highest_fret(r));
+      } else { // no fret held - send space
+        register_space();
+      }
+    }
+  }
+  else { // if a key is released, check if strum bar is held. if so, a lower fret shoud be pressed
+    // only unregister spacebar if NONE of the strum bars are held
+    unregister_space();
+    // check if a lower fret is still held
+    if (is_strum_held(r)) { // only check if a key should be pressed if the strum bar is pressed
+      if (get_highest_fret(r) >= 0) {
+        register_fret(r, get_highest_fret(r));
+      } else { // no fret held -- unregister all frets
+        unregister_row(r);
+        register_space(); // revert back to space since a strum bar is held
+      }
+
+    } else { // if strum bar is not held, release all keys
+      unregister_row(r);
+    }
+  }
+
+  return false;
 }
 
 
@@ -492,7 +483,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     xprintf("- simple mode: %u\n", user_config_previous.simple_mode);
     xprintf("- backspace_replaces_backslash: %u\n", user_config_previous.backspace_replaces_backslash);
     xprintf("- escape_replaces_tab: %u\n", user_config_previous.escape_replaces_tab);
-    xprintf("- these amps go to 1%u\n", user_config_previous.spinal_tap);
+    xprintf("- these keyboards go to 1%u\n", user_config_previous.spinal_tap);
     xprintf("- mods_for_pickup_pos_0: %u\n", user_config_previous.mods_for_pickup_pos_0);
     xprintf("- mods_for_pickup_pos_1: %u\n", user_config_previous.mods_for_pickup_pos_1);
     xprintf("- mods_for_pickup_pos_2: %u\n", user_config_previous.mods_for_pickup_pos_2);
