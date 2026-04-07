@@ -13,17 +13,17 @@ guitar hero mechanical keyboard
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
-|raspberry pi pico|1|
-|fretboard pcb|1|
-|fretboard plate|1|
-|strumbar pcb|1|
-|18p 2.54 mm pitch angled connector male^|1|
-|18p 2.54 mm pitch dupont cable female end ~5 cm^|1|
+|18 pin 2.54 mm pitch angled connector male^|1|
+|18 pin 2.54 mm pitch dupont cable female end ~5 cm^|1|
 |usb breakout board male (to match your pico)|1|
 |usb breakout board female (to match your lead)|1|
 |mx switch for fretboard|39-40|
 |mx switch for strumbars|6|
 |2u stabs|2-3|
+|raspberry pi pico|1|
+|fretboard pcb|1|
+|fretboard plate|1|
+|strumbar pcb|1|
 |3d printed parts||
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_\
@@ -75,9 +75,9 @@ there is capacity for two more switches on matrix positions 1,13 and 2,13.
 |r|reset eeprom|
 
 #### edit mods
-mods can be changed by selecting the pickup position, hold the desired mods and press the strumbar closest to you to set.
-|left shift|z|x|c|,|.|/|right shift|
-|---|---|---|---|---|---|---|---|
-|left shift|left ctrl|left gui|left alt|right alt|right gui|right ctrl|right shift|
+mods can be changed by selecting the pickup position, hold the desired mods and press the strum bar closest to you to set.
+|left shift|z|x|c|
+|---|---|---|---|
+|left shift|left ctrl|left gui|left alt|
 
 switch off the config layer to save.
