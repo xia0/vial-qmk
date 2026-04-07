@@ -50,7 +50,7 @@ const int num_frets[] = { 14, 13, 13 };
 enum layer_names {
   BASE,
   NOSUS,
-  NUMBER,
+  NUM,
   NORMAL,
   CONFIG
 };
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,
         _______, _______, _______,
         KC_MUTE,
-        MO(NUMBER), _______, MO(NORMAL), MO(CONFIG)
+        MO(NUM), _______, MO(NORMAL), MO(CONFIG)
     ),
     [NOSUS] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,
         _______, _______, _______, _______
     ),
-    [NUMBER] = LAYOUT(
+    [NUM] = LAYOUT(
         _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_MINS, KC_EQL , _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -91,11 +91,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [NORMAL] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, MO(NUM),
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_DOWN, KC_UP  ,
         KC_RGHT, KC_LEFT,
-        KC_SPC , KC_SPC ,
+        MO(NUM), KC_SPC ,
         _______, _______, _______,
         _______,
         _______, _______, _______, _______
@@ -139,8 +139,8 @@ uint8_t get_fret_keycode(int row, int col) {
 
   // check config if substitution required
   // row and col should be specified in case keymap has these keycodes at other positions
-  if (user_config.escape_replaces_tab && row == 0 && col == 0) { keycode = KC_ESCAPE; }
-  else if (user_config.backspace_replaces_backslash && row == 0 && col == 13) { keycode = KC_BACKSPACE; }
+  if (keycode == KC_TAB && user_config.escape_replaces_tab && row == 0 && col == 0) { keycode = KC_ESCAPE; }
+  else if (keycode == KC_BACKSLASH && user_config.backspace_replaces_backslash && row == 0 && col == 13) { keycode = KC_BACKSPACE; }
 
   return keycode;
 }
@@ -265,7 +265,7 @@ void register_space(void) {
 void register_fret(int row, int col) {
 
   // spinal tap mode
-  if (user_config.spinal_tap && IS_LAYER_ON(NUMBER) && row == 0) {
+  if (user_config.spinal_tap && IS_LAYER_ON(NUM) && row == 0) {
     switch(col) {
       case 11:
         SEND_STRING("11");
@@ -344,9 +344,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // type normally (without strumbars)
-  if (get_highest_layer(layer_state) >= NORMAL) {
+  if (IS_LAYER_ON(NORMAL)) {
     // check if keycode substitution is required
-    if (record->event.key.row >= 0 && record->event.key.row <= 2) {
+    //if (keycode != get_fret_keycode(record->event.key.row, record->event.key.col)) {
+    if (record->event.key.row >= 0 && record->event.key.row <= 2 && record->event.key.col < num_frets[record->event.key.row]) {
       if (record->event.pressed) { register_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
       else { unregister_code(get_fret_keycode(record->event.key.row, record->event.key.col)); }
       return false;
