@@ -42,7 +42,7 @@ _# for tuning strum bar clearance. you could also use a 3d printed washer, bits 
 - encoder -> encA, gnd, encB
 
 #### RS26 rotary switch
-- com -> row 3
+- A -> row 3
 - 1 -> col 13
 - 2 -> col 12
 - 3 -> col 11
