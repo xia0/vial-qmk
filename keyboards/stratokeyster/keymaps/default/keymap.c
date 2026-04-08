@@ -12,6 +12,7 @@ typedef union {
     bool simple_mode: 1;
     bool backspace_replaces_backslash :1;
     bool escape_replaces_tab :1;
+    bool encoder_reverse_direction :1;
     bool spinal_tap :1;
     uint8_t mods_for_pickup_pos_0 :4; // using 8 bit int but take up 4 bits. these need to be at the end
     uint8_t mods_for_pickup_pos_1 :4;
@@ -35,6 +36,7 @@ void eeconfig_init_user(void) {
   user_config.simple_mode = false;
   user_config.backspace_replaces_backslash = false;
   user_config.escape_replaces_tab = false;
+  user_config.encoder_reverse_direction = false;
   user_config.spinal_tap = false;
   user_config.mods_for_pickup_pos_0 = (MOD_BIT(KC_LEFT_GUI));
   user_config.mods_for_pickup_pos_1 = (MOD_BIT(KC_LEFT_CTRL) | MOD_BIT(KC_LEFT_ALT));
@@ -278,7 +280,7 @@ void update_mods(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  //xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+  xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
 
   // check if user is configuring
   if (IS_LAYER_ON(CONFIG)) {
@@ -352,14 +354,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // first check if press should be ignored
   if (record->event.key.row >= 0 && record->event.key.row <= 2) {
+
+    // check if pressed key is out of bounds of fretboard (e.g. 1,13 and 2,13)
+    if (record->event.key.col > num_frets[record->event.key.row]-1) { return true; }
+
     // ignore event if it's on a lower fret than what's currently held
     if (record->event.key.col < get_highest_fret(record->event.key.row)) { return false; }
 
     // ignore fret press if strumbar not pressed on that row
     if (!is_strum_held(record->event.key.row) && !user_config.simple_mode) { return false; }
-
-    // check if pressed key is out of bounds of fretboard (e.g. 1,13 and 2,13)
-    if (record->event.key.col >= num_frets[record->event.key.row]) { return true; }
   }
 
   // figure out which row to interact with
@@ -475,6 +478,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     xprintf("- simple mode: %u\n", user_config_previous.simple_mode);
     xprintf("- backspace_replaces_backslash: %u\n", user_config_previous.backspace_replaces_backslash);
     xprintf("- escape_replaces_tab: %u\n", user_config_previous.escape_replaces_tab);
+    xprintf("- encoder_reverse_direction: %u\n", user_config_previous.encoder_reverse_direction);
     xprintf("- these keyboards go to 1%u\n", user_config_previous.spinal_tap);
     xprintf("- mods_for_pickup_pos_0: %u\n", user_config_previous.mods_for_pickup_pos_0);
     xprintf("- mods_for_pickup_pos_1: %u\n", user_config_previous.mods_for_pickup_pos_1);
@@ -506,9 +510,21 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
 
+  // check if user is configuring
+  if (IS_LAYER_ON(CONFIG)) {
+    // user to turn encoder clockwise
+    // if we get clockwise = 0 when they do this, the encoder direction should be reversed
+    user_config.encoder_reverse_direction = !clockwise;
+    xprintf("CONFIG: reverse encoder direction set to %u\n", !clockwise);
+    return false;
+  }
+
+  // check if user has config reverse direction
+  if (user_config.encoder_reverse_direction) { clockwise = !clockwise; }
+
   if (clockwise) { tap_code_delay(KC_VOLU, 10); }
   else { tap_code_delay(KC_VOLD, 10); }
 
-  return true;
+  return false; // default behaviour is vol control which we already do above
 }
 #endif
