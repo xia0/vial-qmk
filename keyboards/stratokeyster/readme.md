@@ -40,6 +40,7 @@ _# for tuning strum bar clearance. you could also use a 3d printed washer, bits 
 #### EC11 rotary encoder
 - push button -> row 3, col 9
 - encoder -> encA, gnd, encB
+encoder direction can be changed later on config layer
 
 #### RS26 rotary switch
 - A -> row 3
