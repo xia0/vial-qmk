@@ -77,10 +77,10 @@ row 2, col 13
 |middle strum bar|toggle between simple mode and normal mode*|
 |backslash|toggle between backslash or backspace|
 |tab|toggle between tab or escape|
-|[|???|
 |encoder push button|bootloader|
 |encoder rotate|set direction of rotation as clockwise|
 |r|reset eeprom|
+|[|???|
 
 _* in simple mode, only the middle strum bar is active._
 
