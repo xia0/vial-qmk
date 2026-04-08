@@ -413,7 +413,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_row(i);
         }
       }
-      if (!is_fretted) {
+      if (!is_fretted && !IS_LAYER_ON(NOSUS)) {
         register_space();
       }
     }
@@ -442,7 +442,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_fret(r, get_highest_fret(r));
       } else { // no fret held -- unregister all frets
         unregister_row(r);
-        register_space(); // revert back to space since a strum bar is held
+        if (!IS_LAYER_ON(NOSUS)) { register_space(); } // revert back to space since a strum bar is held
       }
 
     } else { // if strum bar is not held, release all keys
