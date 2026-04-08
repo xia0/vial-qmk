@@ -48,8 +48,11 @@ _# for tuning strum bar clearance. you could also use a 3d printed washer, bits 
 - 3 -> col 11
 - 4 -> col 10
 
-### free pins
-there is capacity for two more switches on matrix positions 1,13 and 2,13.
+#### bridge key
+row 1, col 13
+
+#### free pin
+row 2, col 13
 
 ## usage
 #### pickup selector (mods) defaults
@@ -74,6 +77,7 @@ there is capacity for two more switches on matrix positions 1,13 and 2,13.
 |tab|toggle between tab or escape|
 |[|???|
 |encoder push button|bootloader|
+|encoder rotate|set direction of rotation as clockwise|
 |r|reset eeprom|
 
 _* in simple mode, only the middle strum bar is active._
