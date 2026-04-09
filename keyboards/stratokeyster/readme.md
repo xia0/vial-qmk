@@ -4,22 +4,24 @@ guitar hero mechanical keyboard
 ## bom
 |item|qty|
 |---|---|
-|M3 x 10~12 mm bolt*|14|
+|M3 x 10~12 mm bolt*|16|
 |M3 x 30 mm bolt*|4|
 |M3 x 80 mm bolt|3|
 |M3 nyloc nut|3|
-|M3 heat set insert 5 mm OD x 4~5 mm L|18|
+|M3 heat set insert 5 mm OD x 4~5 mm L|20|
 |M3 washer#|0~8|
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
 |18 pin 2.54 mm pitch angled connector male^|1|
 |18 pin 2.54 mm pitch dupont cable female end ~5 cm^|1|
-|usb breakout board male (to match your pico)|1|
-|usb breakout board female (to match your lead)|1|
+|usb breakout board male|1|
+|usb breakout board female|1|
 |mx switch for fretboard|39-40|
-|mx switch for strumbars|6|
-|2u stabs|2-3|
+|mx switch for bridge†|1|
+|mx switch for strumbars†|6|
+|2u pcb mount stab|2-3|
+|2u plate mount stab|1|
 |raspberry pi pico|1|
 |fretboard pcb|1|
 |fretboard plate|1|
@@ -27,8 +29,9 @@ guitar hero mechanical keyboard
 |3d printed parts||
 
 _\* phillips head silver colour bolts recommended for aesthetic reasons_\
-_^ or combination of pins that add up_\
-_# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._
+_^ alternatively, a combination of pins that add up to 18_\
+_# for tuning strum bar clearance. you could also use a 3d printed washer, bits of paper, etc..._\
+_† heavy and clicky recommended e.g. kailh box navy or kailh box black_
 
 ## pick guard wiring
 #### pickup selector
@@ -89,5 +92,7 @@ mods can be changed by selecting the pickup position, hold the desired mods and 
 |left shift|z|x|c|
 |---|---|---|---|
 |left shift|left ctrl|left gui|left alt|
+
+optional: use qmk toolbox hid console to view settings
 
 switch off the config layer to save to eeprom.
