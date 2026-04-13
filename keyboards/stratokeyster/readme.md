@@ -1,5 +1,5 @@
 # stratokeyster
-guitar hero mechanical keyboard
+![stratokeyster guitar hero mechanical keyboard](https://github.com/xia0/vial-qmk/blob/stratokeyster/keyboards/stratokeyster/pics/IMG_5900%5B1%5D.jpg?raw=true)
 
 ## bom
 |item|qty|
