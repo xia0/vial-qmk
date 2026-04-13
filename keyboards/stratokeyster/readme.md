@@ -74,7 +74,11 @@ row 2, col 13
 |---|---|---|---|
 | config | normal typing | strum typing | numbers |
 
+#### bridge switch (palm mute)
+does not hold down the key and does not register space if the key is released before the strum bar.
+
 ### config layer
+the hid console in qmk toolbox can be useful to view which options are set but is not necessary.
 |control|function|
 |---|---|
 |middle strum bar|toggle between simple mode and normal mode*|
@@ -92,7 +96,5 @@ mods can be changed by selecting the pickup position, hold the desired mods and 
 |left shift|z|x|c|
 |---|---|---|---|
 |left shift|left ctrl|left gui|left alt|
-
-optional: use qmk toolbox hid console to view settings
 
 switch off the config layer to save to eeprom.
