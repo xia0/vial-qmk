@@ -58,8 +58,8 @@ encoder direction can be changed later on config layer
 row 1, col 13
 
 #### buzzer
-+ve -> GP0
--ve -> ground
+- +ve -> GP0
+- -ve -> ground
 
 #### free pin
 row 2, col 13
