@@ -13,6 +13,7 @@
 |ec11 rotary encoder 15 mm half shaft|1|
 |rs26 3 pole 4 throw rotary switch 15 mm half shaft|1|
 |5 way pickup selector|1|
+|passive buzzer 6.5 mm pin spacing|1|
 |18 pin 2.54 mm pitch angled connector male^|1|
 |18 pin 2.54 mm pitch dupont cable female end ~5 cm^|1|
 |usb breakout board male|1|
@@ -56,6 +57,10 @@ encoder direction can be changed later on config layer
 #### bridge key
 row 1, col 13
 
+#### buzzer
++ve -> GP0
+-ve -> ground
+
 #### free pin
 row 2, col 13
 
@@ -86,6 +91,8 @@ the hid console in qmk toolbox can be useful to view which options are set but i
 |tab|toggle between tab or escape|
 |encoder push button|bootloader|
 |encoder rotate|set direction of rotation as clockwise|
+|a|toggle audio|
+|d|toggle drop D tuning|
 |r|reset eeprom|
 |[|???|
 
