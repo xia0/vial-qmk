@@ -13,6 +13,8 @@ typedef union {
     bool backspace_replaces_backslash :1;
     bool escape_replaces_tab :1;
     bool encoder_reverse_direction :1;
+    bool drop_d :1;
+    bool enable_audio :1;
     bool spinal_tap :1;
     uint8_t mods_for_pickup_pos_0 :4; // using 8 bit int but take up 4 bits. these need to be at the end
     uint8_t mods_for_pickup_pos_1 :4;
@@ -37,6 +39,8 @@ void eeconfig_init_user(void) {
   user_config.backspace_replaces_backslash = false;
   user_config.escape_replaces_tab = false;
   user_config.encoder_reverse_direction = false;
+  user_config.drop_d = false;
+  user_config.enable_audio = true;
   user_config.spinal_tap = false;
   user_config.mods_for_pickup_pos_0 = (MOD_BIT(KC_LEFT_GUI));
   user_config.mods_for_pickup_pos_1 = (MOD_BIT(KC_LEFT_CTRL) | MOD_BIT(KC_LEFT_ALT));
@@ -44,6 +48,17 @@ void eeconfig_init_user(void) {
   user_config.mods_for_pickup_pos_3 = (MOD_BIT(KC_LEFT_CTRL));
   eeconfig_update_user(user_config.raw); // Write BASE value to EEPROM now
 }
+
+// fretboard lookup table for notes
+const float fretboard_notes[][15] = {
+  { NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5, NOTE_BF5, NOTE_B5, NOTE_C6, NOTE_CS6, NOTE_D6, NOTE_EF6, NOTE_E6, NOTE_F6, NOTE_FS6 },
+  { NOTE_B4, NOTE_C5, NOTE_CS5, NOTE_D5, NOTE_EF5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5, NOTE_BF5, NOTE_B5, NOTE_C6, NOTE_CS6 },
+  { NOTE_G4, NOTE_GS4, NOTE_A4, NOTE_BF4, NOTE_B4, NOTE_C5, NOTE_CS5, NOTE_D5, NOTE_EF5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5 },
+  { NOTE_D4, NOTE_EF4, NOTE_E4, NOTE_F4, NOTE_FS4, NOTE_G4, NOTE_GS4, NOTE_A4, NOTE_BF4, NOTE_B4, NOTE_C5, NOTE_CS5, NOTE_D5, NOTE_EF5, NOTE_E5 },
+  { NOTE_A3, NOTE_BF3, NOTE_B3, NOTE_C4, NOTE_CS4, NOTE_D4, NOTE_EF4, NOTE_E4, NOTE_F4, NOTE_FS4, NOTE_G4, NOTE_GS4, NOTE_A4, NOTE_BF4, NOTE_A4 },
+  { NOTE_E3, NOTE_F3, NOTE_FS3, NOTE_G3, NOTE_GS3, NOTE_A3, NOTE_BF3, NOTE_B3, NOTE_C4, NOTE_CS4, NOTE_D4, NOTE_EF4, NOTE_E4, NOTE_F4, NOTE_FS4 },
+  { NOTE_D3, NOTE_EF3, NOTE_E3, NOTE_F3, NOTE_FS3, NOTE_G3, NOTE_GS3, NOTE_A3, NOTE_BF3, NOTE_B3, NOTE_C4, NOTE_CS4, NOTE_D4, NOTE_EF4, NOTE_E4 } // drop D
+};
 
 // define how many keys are in each row on the physical fretboard
 // we do not check outside these bounds when running fretboard logic
@@ -206,7 +221,34 @@ void set_pickup_selector_mods(int pos) {
   register_mods(mods);
 }
 
+// get the fretboard note depending on layer and drop d tuning
+int get_audio_play_fret_row(int row) {
+  row = row + 3 - 3*IS_LAYER_ON(NUM); // upper three strings when set to NUM layer
+  if (user_config.drop_d && row == 5) { // tuned to drop D
+    row++;
+  }
+  return row;
+}
 
+// play note from fretboard lookup table
+void audio_play_fret(int row, int col) {
+  if (!user_config.enable_audio) { return; }
+
+  row = get_audio_play_fret_row(row);
+
+  if (IS_LAYER_ON(NOSUS) || IS_LAYER_ON(CONFIG)) {
+    audio_play_note(fretboard_notes[row][col+1], 64);
+  }
+  else {
+    audio_play_tone(fretboard_notes[row][col+1]);
+  }
+}
+
+void audio_stop_fret(int row, int col) {
+  row = get_audio_play_fret_row(row);
+  if (!user_config.enable_audio) { return; }
+  audio_stop_tone(fretboard_notes[row][col+1]);
+}
 
 // unregister entire row
 void unregister_row_except(int row, int ignore_col) {
@@ -214,13 +256,17 @@ void unregister_row_except(int row, int ignore_col) {
     if (f != ignore_col || IS_LAYER_ON(NOSUS)) {
 
       // do not unregister shift mods if they happen to already be held
+      /*
       if (row == 2 && get_mods() & MOD_MASK_SHIFT &&
          ((get_fret_keycode(row, f) == KC_LEFT_SHIFT && get_mods() & MOD_BIT(KC_LEFT_SHIFT) && !matrix_is_on(2,0)) ||
           (get_fret_keycode(row, f) == KC_RIGHT_SHIFT && get_mods() & MOD_BIT(KC_RIGHT_SHIFT) && !matrix_is_on(2,11)))
          ) {
         continue;
       }
+      */
 
+      // only stop tone if not nosus. if nosus, note w/duration is played in register_fret already
+      if (!IS_LAYER_ON(NOSUS)) { audio_stop_fret(row, f); }
       unregister_code(get_fret_keycode(row, f));
     }
   }
@@ -236,6 +282,9 @@ void unregister_space(void) {
     if (!(!is_strum_held(i) || (is_strum_held(i) && get_highest_fret(i) >= 0))) {
       return;
     }
+    else {
+      audio_stop_fret(i, -1);
+    }
   }
   unregister_code(KC_SPACE);
 }
@@ -244,9 +293,15 @@ void unregister_space(void) {
 void register_space(void) {
   for (int i = 0; i <= 2; i++) {
     if (is_strum_held(i) && get_highest_fret(i) < 0) { // if playing open string
-      if (IS_LAYER_ON(NOSUS)) { tap_code(KC_SPACE); }
-      else { register_code(KC_SPACE); }
-      return;
+      if (IS_LAYER_ON(NOSUS)) {
+        audio_play_fret(i, -1);
+        tap_code(KC_SPACE);
+      }
+      else {
+        audio_play_fret(i, -1);
+        register_code(KC_SPACE);
+      }
+      //return;
     }
   }
 }
@@ -255,6 +310,9 @@ void register_space(void) {
 
 // register keycode corresponding to fret
 void register_fret(int row, int col) {
+
+  // play note if nosus, otherwise play tone
+  audio_play_fret(row, col);
 
   // spinal tap mode
   if (user_config.spinal_tap && IS_LAYER_ON(NUM) && row == 0) {
@@ -280,36 +338,55 @@ void update_mods(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
+  //xprintf("KL: col: %u, row: %u, pressed: %u\n", record->event.key.col, record->event.key.row, record->event.pressed);
 
   // check if user is configuring
   if (IS_LAYER_ON(CONFIG)) {
-    // toggle backslash as backspace
+    // BACKSLASH - toggle backslash as backspace
     if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 13) {
       user_config.backspace_replaces_backslash = !user_config.backspace_replaces_backslash;
+      audio_play_fret(!user_config.backspace_replaces_backslash, -1);
       xprintf("CONFIG: backspace replaces backslash set to %u\n", user_config.backspace_replaces_backslash);
       return false;
     }
-    // toggle escape as tab
+    // TAB - toggle escape as tab
     else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 0) {
       user_config.escape_replaces_tab = !user_config.escape_replaces_tab;
+      audio_play_fret(!user_config.escape_replaces_tab, -1);
       xprintf("CONFIG: escape replaces tab set to %u\n", user_config.escape_replaces_tab);
       return false;
     }
-    // these keyboards go to 11
+    // MINUS - these keyboards go to 11
     else if (record->event.pressed && record->event.key.row == 0 && record->event.key.col == 11) {
       user_config.spinal_tap = !user_config.spinal_tap;
+      audio_play_fret(!user_config.spinal_tap, -1);
       xprintf("CONFIG: these keyboards go to 1%u\n", user_config.spinal_tap);
       return false;
     }
-    // toggle simple mode
+    // D - toggle drop d tuning
+    else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 3) {
+      user_config.drop_d = !user_config.drop_d;
+      audio_play_fret(!user_config.drop_d, -1);
+      xprintf("CONFIG: drop d tuning set to %u\n", user_config.drop_d);
+      return false;
+    }
+    // A - toggle audio
+    else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 1) {
+      user_config.enable_audio = !user_config.enable_audio;
+      audio_play_fret(!user_config.enable_audio, -1);
+      xprintf("CONFIG: enable audio set to %u\n", user_config.enable_audio);
+      return false;
+    }
+    // MIDDLE STRUM BAR - toggle simple mode
     else if (record->event.pressed && record->event.key.row == 3 && (record->event.key.col == 1 || record->event.key.col == 4)) {
       user_config.simple_mode = !user_config.simple_mode;
+      audio_play_fret(!user_config.simple_mode, -1);
       xprintf("CONFIG: simple mode set to %u\n", user_config.simple_mode);
       return false;
     }
-    // enter - save currently held mods to current pickup position
+    // ENTER - save currently held mods to current pickup position
     else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 12) {
+      audio_play_fret(0, -1);
       xprintf("CONFIG: mods for pickup pos %u set to %u\n", get_pickup_selector_pos(), get_mods());
       switch(get_pickup_selector_pos()) {
         case 0: user_config.mods_for_pickup_pos_0 = get_mods(); break;
@@ -457,6 +534,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
 void keyboard_post_init_user(void) {
+  // set music tempo
+  //audio_set_tempo(60);
+
   // Read the user config from EEPROM
   user_config.raw = eeconfig_read_user();
 }
@@ -479,6 +559,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     xprintf("- backspace_replaces_backslash: %u\n", user_config_previous.backspace_replaces_backslash);
     xprintf("- escape_replaces_tab: %u\n", user_config_previous.escape_replaces_tab);
     xprintf("- encoder_reverse_direction: %u\n", user_config_previous.encoder_reverse_direction);
+    xprintf("- drop_d: %u\n", user_config_previous.drop_d);
+    xprintf("- enable_audio: %u\n", user_config_previous.enable_audio);
     xprintf("- these keyboards go to 1%u\n", user_config_previous.spinal_tap);
     xprintf("- mods_for_pickup_pos_0: %u\n", user_config_previous.mods_for_pickup_pos_0);
     xprintf("- mods_for_pickup_pos_1: %u\n", user_config_previous.mods_for_pickup_pos_1);
@@ -507,14 +589,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   return state;
 }
 
-#ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
-
   // check if user is configuring
   if (IS_LAYER_ON(CONFIG)) {
     // user to turn encoder clockwise
     // if we get clockwise = 0 when they do this, the encoder direction should be reversed
     user_config.encoder_reverse_direction = !clockwise;
+    audio_play_fret(user_config.encoder_reverse_direction, -1);
     xprintf("CONFIG: reverse encoder direction set to %u\n", !clockwise);
     return false;
   }
@@ -527,4 +608,3 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
   return false; // default behaviour is vol control which we already do above
 }
-#endif
