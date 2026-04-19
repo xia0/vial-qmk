@@ -89,7 +89,7 @@ the hid console in qmk toolbox can be useful to view which options are set but i
 |middle strum bar|toggle between simple mode and normal mode*|
 |backslash|toggle between backslash or backspace|
 |tab|toggle between tab or escape|
-|bridge key|NUM layer replaces palm mute (access higher strings easier)|
+|bridge key|NUM layer replaces palm mute (quick access to high strings)|
 |encoder push button|bootloader|
 |encoder rotate|set direction of rotation as clockwise|
 |a|toggle audio|
