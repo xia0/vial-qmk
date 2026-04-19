@@ -9,10 +9,11 @@
 typedef union {
   uint64_t raw;
   struct {
-    bool simple_mode: 1;
+    bool simple_mode :1;
     bool backspace_replaces_backslash :1;
     bool escape_replaces_tab :1;
     bool ctrl_replaces_caps :1;
+    bool num_replaces_pm :1;
     bool encoder_reverse_direction :1;
     bool drop_d :1;
     bool enable_audio :1;
@@ -24,7 +25,6 @@ typedef union {
     uint8_t mods_for_pickup_pos_4 :4;
   };
 } user_config_t;
-
 user_config_t user_config;
 
 // EEPROM reset - default settings
@@ -39,6 +39,7 @@ void eeconfig_init_user(void) {
   user_config.simple_mode = false;
   user_config.backspace_replaces_backslash = false;
   user_config.escape_replaces_tab = false;
+  user_config.num_replaces_pm = false;
   user_config.encoder_reverse_direction = false;
   user_config.drop_d = false;
   user_config.enable_audio = true;
@@ -206,6 +207,7 @@ int get_pickup_selector_pos(void) {
   return -1;
 }
 
+// return mod mask for which mods should be on according to pickup selector pos
 int get_pickup_selector_mods(int pos) {
   switch(pos) {
     case 0: return user_config.mods_for_pickup_pos_0;
@@ -237,18 +239,21 @@ int matrix_row_to_fretboard_row(int row) {
 }
 
 // play audio
-void audio_process_notes(void) {
+//   row = -1 to process all rows
+void audio_process_notes(int row) {
   audio_stop_all();
 
   float tone;
   for (int r = 0; r < 3; r++) {
+    if (row >= 0 && r != row) { continue; } // skip if row is specified and it's not this row
+
     tone = -1;
 
     if (is_strum_held(r)) {
       if (get_highest_fret(r) >= 0) {
         tone = fretboard_notes[matrix_row_to_fretboard_row(r)][get_highest_fret(r)+1];
       }
-      else {
+      else { // open string
         tone = fretboard_notes[matrix_row_to_fretboard_row(r)][0];
       }
     }
@@ -318,9 +323,6 @@ void register_space(void) {
 // register keycode corresponding to fret
 void register_fret(int row, int col) {
 
-  // unregister any other frets that might be held or unregister all if no sustain
-  unregister_row_except_col(row, col);
-
   // spinal tap mode
   if (user_config.spinal_tap && IS_LAYER_ON(NUM) && row == 0) {
     switch(col) {
@@ -334,6 +336,9 @@ void register_fret(int row, int col) {
   }
 
   register_code(get_fret_keycode(row, col));
+
+  // unregister any other frets that might be held or unregister all if no sustain
+  unregister_row_except_col(row, col);
 }
 
 
@@ -362,6 +367,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       user_config.ctrl_replaces_caps = !user_config.ctrl_replaces_caps;
       audio_play_note(fretboard_notes[!user_config.ctrl_replaces_caps][0], 64);
       xprintf("CONFIG: ctrl replaces caps set to %u\n", user_config.ctrl_replaces_caps);
+      return false;
+    }
+    // BRIDGE - toggle bridge as MO(NUM)
+    else if (record->event.pressed && record->event.key.row == 1 && record->event.key.col == 13) {
+      user_config.num_replaces_pm = !user_config.num_replaces_pm;
+      audio_play_note(fretboard_notes[!user_config.num_replaces_pm][0], 64);
+      xprintf("CONFIG: MO(NUM) replaces MO(NOSUS) set to %u\n", user_config.num_replaces_pm);
       return false;
     }
     // MINUS - these keyboards go to 11
@@ -418,6 +430,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   ) {
     update_mods();
     return true;
+  }
+
+  // check if MO(NUM) should replace MO(NOSUS)
+  if (record->event.key.row == 1 && record->event.key.col == 13 && user_config.num_replaces_pm) {
+    xprintf("yep\n");
+    if (record->event.pressed) { layer_on(NUM); }
+    else { layer_off(NUM); }
+    audio_process_notes(-1);
+    return false;
   }
 
   // type normally (without strumbars)
@@ -536,14 +557,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // play buzzer
-  if (user_config.enable_audio
-      && !(!record->event.pressed && IS_LAYER_ON(NOSUS)) // if NOSUS is on, do not do anything on release
-     ) { audio_process_notes(); }
+  if (user_config.enable_audio) {
+    if (IS_LAYER_ON(NOSUS)) { // only play when strummed if NOSUS
+      if (record->event.pressed && (record->event.key.row == 3 && record->event.key.col <= 5)) {
+        audio_process_notes(strumbar_row_from_col[record->event.key.col]);
+      }
+    }
+    else {
+      audio_process_notes(-1);
+    }
+  }
 
   return false;
 }
-
-
 
 
 void keyboard_post_init_user(void) {
@@ -563,6 +589,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     unregister_row(2);
     unregister_space();
     unregister_mods(get_mods());
+    audio_stop_all();
     xprintf("CONFIG layer activated\n");
 
     xprintf("current settings:\n");
@@ -570,6 +597,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     xprintf("- backspace_replaces_backslash: %u\n", user_config_previous.backspace_replaces_backslash);
     xprintf("- escape_replaces_tab: %u\n", user_config_previous.escape_replaces_tab);
     xprintf("- ctrl_replaces_caps: %u\n", user_config_previous.ctrl_replaces_caps);
+    xprintf("- num_replaces_pm: %u\n", user_config_previous.num_replaces_pm);
     xprintf("- encoder_reverse_direction: %u\n", user_config_previous.encoder_reverse_direction);
     xprintf("- drop_d: %u\n", user_config_previous.drop_d);
     xprintf("- enable_audio: %u\n", user_config_previous.enable_audio);
