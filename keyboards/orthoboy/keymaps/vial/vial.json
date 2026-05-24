@@ -1,0 +1,177 @@
+{
+    "lighting": "none",
+    "customKeycodes": [
+    	{"name": "RG Menu",
+    	 "title": "",
+    	 "shortName": "RG_MENU"
+    	},
+      {"name": "RG Option",
+    	 "title": "",
+    	 "shortName": "RG_OPTION"
+    	},
+      {"name": "RG Start",
+    	 "title": "",
+    	 "shortName": "RG_START"
+    	},
+      {"name": "RG Select",
+       "title": "",
+       "shortName": "RG_SELECT"
+      },
+      {"name": "RG Up",
+       "title": "",
+       "shortName": "RG_UP"
+      },
+      {"name": "RG Down",
+       "title": "",
+       "shortName": "RG_DOWN"
+      },
+      {"name": "RG Left",
+       "title": "",
+       "shortName": "RG_LEFT"
+      },
+      {"name": "RG Right",
+       "title": "",
+       "shortName": "RG_RIGHT"
+      },
+      {"name": "RG A",
+       "title": "",
+       "shortName": "RG_A"
+      },
+      {"name": "RG B",
+       "title": "",
+       "shortName": "RG_B"
+      },
+      {"name": "RG X",
+       "title": "",
+       "shortName": "RG_X"
+      },
+      {"name": "RG Y",
+       "title": "",
+       "shortName": "RG_Y"
+      },
+      {"name": "RG L",
+       "title": "",
+       "shortName": "RG_L"
+      },
+      {"name": "RG_R",
+       "title": "",
+       "shortName": "RG_R"
+      }
+    ],
+    "matrix": {
+        "rows": 10,
+        "cols": 6
+    },
+    "layouts": {
+        "labels":[
+          "Split left space",
+          "Split right space"
+        ],
+        "keymap":
+        [
+          {
+            "name": "orthoboy"
+          },
+          [
+            "0,0",
+            "0,1",
+            "0,2",
+            "0,3",
+            "0,4",
+            "0,5",
+            {
+              "x": 3
+            },
+            "5,5",
+            "5,4",
+            "5,3",
+            "5,2",
+            "5,1",
+            "5,0"
+          ],
+          [
+            "1,0",
+            "1,1",
+            "1,2",
+            "1,3",
+            "1,4",
+            "1,5",
+            {
+              "x": 3
+            },
+            "6,5",
+            "6,4",
+            "6,3",
+            "6,2",
+            "6,1",
+            "6,0"
+          ],
+          [
+            "2,0",
+            "2,1",
+            "2,2",
+            "2,3",
+            "2,4",
+            "2,5",
+            {
+              "x": 3
+            },
+            "7,5",
+            "7,4",
+            "7,3",
+            "7,2",
+            "7,1",
+            "7,0"
+          ],
+          [
+            "3,0",
+            "3,1",
+            "3,2",
+            "3,3",
+            "3,4",
+            "3,5",
+            {
+              "x": 3
+            },
+            "8,5",
+            "8,4",
+            "8,3",
+            "8,2",
+            "8,1",
+            "8,0"
+          ],
+          [
+            "4,0",
+            "4,1",
+            "4,2",
+            "4,3",
+            {
+              "w": 2
+            },
+            "4,5\n\n\n0,0",
+            {
+              "x": 3,
+              "w": 2
+            },
+            "9,5\n\n\n1,0",
+            "9,3",
+            "9,2",
+            "9,1",
+            "9,0"
+          ],
+          [
+            {
+              "y": 0.25,
+              "x": 4
+            },
+            "4,4\n\n\n0,1",
+            "4,5\n\n\n0,1",
+            {
+              "x": 3
+            },
+            "9,5\n\n\n1,1",
+            "9,4\n\n\n1,1"
+          ]
+        ]
+    }
+}
