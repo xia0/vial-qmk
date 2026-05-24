@@ -66,10 +66,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP0"
-        }
+        "soft_serial_pin": "GP0"
     },
     "url": "https://github.com/dlford/quokka",
     "usb": {

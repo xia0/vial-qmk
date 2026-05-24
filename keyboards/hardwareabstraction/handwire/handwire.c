@@ -39,6 +39,7 @@ void housekeeping_task_kb(void){
         gpio_write_pin_low(BUZZER_PIN);
         }
     }
+    housekeeping_task_user();
 }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {

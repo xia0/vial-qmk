@@ -1,6 +1,7 @@
 {
   "keyboard_name": "Fortitude60",
   "manufacturer": "Pekaso",
+  "url": "",
   "maintainer": "qmk",
   "usb": {
     "vid": "0xCB10",
@@ -24,9 +25,7 @@
   },
   "split": {
     "enabled": true,
-    "serial": {
-      "pin": "D2"
-    }
+    "soft_serial_pin": "D2"
   },
   "processor": "atmega32u4",
   "bootloader": "caterina",

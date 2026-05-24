@@ -13,7 +13,3 @@ ifeq ($(strip $(CONVERT_TO)),)
     SPACE_CADET_ENABLE = no
     MAGIC_ENABLE = no
 endif
-
-CAPS_WORD_ENABLE = no
-LAYER_LOCK_ENABLE = no
-REPEAT_KEY_ENABLE = no

@@ -2,6 +2,8 @@
     "keyboard_name": "%KEYBOARD%",
     "maintainer": "%USER_NAME%",
     "manufacturer": "%REAL_NAME%",
+    "processor": "%MCU%",
+    "bootloader": "%BOOTLOADER%",
     "diode_direction": "COL2ROW",
     "matrix_pins": {
         "cols": ["C2"],
@@ -14,6 +16,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true

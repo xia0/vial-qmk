@@ -7,6 +7,8 @@
     "features": {
         "backlight": true,
         "bootmagic": false,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": false,
@@ -60,6 +62,7 @@
     },
     "split": {
         "enabled": true,
+        "soft_serial_pin": "D0",
         "encoder": {
             "right": {
                 "rotary": [
@@ -67,17 +70,11 @@
                 ]
             }
         },
-        "handedness": {
-            "pin": "D5"
-        },
         "matrix_pins": {
             "right": {
                 "cols": ["D4", "D7", "D3", "B7", "F0", "B3"],
                 "rows": ["B1", "B2", "D2", "F1", "F4"]
             }
-        },
-        "serial": {
-            "pin": "D0"
         }
     },
     "processor": "atmega32u4",

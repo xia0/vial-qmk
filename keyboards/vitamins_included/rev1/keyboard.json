@@ -15,9 +15,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
     "rgblight": {
         "led_count": 16,

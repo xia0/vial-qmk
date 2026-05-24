@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Titan 65 (hotswap)",
     "manufacturer": "Phase Studio",
+    "url": "",
     "maintainer": "drashna",
     "usb": {
         "vid": "0x5054",
@@ -19,8 +20,7 @@
     },
     "rgb_matrix": {
         "driver": "ws2812",
-        "max_brightness": 150,
-        "sleep": true
+        "max_brightness": 150
     },
     "matrix_pins": {
         "cols": ["B0", "B1", "B2", "B3", "B7", "D0", "D1", "D2", "D3", "D5", "F0", "F1", "C7", "F4", "F5", "F6"],

@@ -39,11 +39,9 @@
                 ]
             }
         },
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP1"
-        },
+        "soft_serial_pin": "GP1",
         "transport": {
+            "protocol": "serial",
             "sync": {
                 "indicators": true,
                 "layer_state": true,
@@ -54,6 +52,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,

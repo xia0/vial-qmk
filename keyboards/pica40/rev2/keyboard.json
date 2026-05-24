@@ -14,6 +14,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "mousekey": true,
         "extrakey": true,
         "encoder": true,
@@ -38,10 +40,6 @@
             "right": {
                 "rotary": []
             }
-        },
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP0"
         }
     },
     "encoder": {

@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Dumbo",
     "manufacturer": "trip_trap",
+    "url": "",
     "maintainer": "adamnaldal",
     "usb": {
         "vid": "0xFEED",
@@ -20,6 +21,7 @@
     },
     "split": {
         "enabled": true,
+        "soft_serial_pin": "D2",
         "encoder": {
             "right": {
                 "rotary": [
@@ -27,9 +29,6 @@
                     {"pin_a": "B5", "pin_b": "C6"}
                 ]
             }
-        },
-        "serial": {
-            "pin": "D2"
         }
     },
     "processor": "atmega32u4",

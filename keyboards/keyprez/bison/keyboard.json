@@ -1,6 +1,7 @@
 {
     "keyboard_name": "bison",
     "manufacturer": "csandven",
+    "url": "",
     "maintainer": "Christian Sandven",
     "usb": {
         "vid": "0xFEED",
@@ -9,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": true,
@@ -32,15 +35,13 @@
     },
     "split": {
         "enabled": true,
+        "soft_serial_pin": "D0",
         "encoder": {
             "right": {
                 "rotary": [
                     {"pin_a": "B5", "pin_b": "B6"}
                 ]
             }
-        },
-        "serial": {
-            "pin": "D0"
         }
     },
     "processor": "atmega32u4",

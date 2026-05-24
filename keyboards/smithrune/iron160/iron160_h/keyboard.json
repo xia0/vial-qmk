@@ -1,6 +1,7 @@
 {
     "keyboard_name": "I160-H",
     "manufacturer": "SmithRune",
+    "url": "",
     "maintainer": "Gondolindrim",
     "usb": {
         "vid": "0x8384",
@@ -32,11 +33,10 @@
     },
    "diode_direction": "COL2ROW",
     "layout_aliases": {
-        "LAYOUT": "LAYOUT_60_ansi_tsangan_split_bs_rshift",
-        "LAYOUT_60_tsangan_hhkb": "LAYOUT_60_ansi_tsangan_split_bs_rshift"
+        "LAYOUT": "LAYOUT_60_tsangan_hhkb"
     },
     "community_layouts": [
-        "60_ansi_tsangan_split_bs_rshift"
+        "60_tsangan_hhkb"
     ],
     "layouts": {
         "LAYOUT_60_ansi_tsangan_split_rshift": {
@@ -108,7 +108,7 @@
                 {"label": "Ctrl", "matrix": [4, 12], "x": 13.5, "y": 4, "w": 1.5}
             ]
         },
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"label": "Esc", "matrix": [0, 0], "x": 0, "y": 0},
                 {"label": "1", "matrix": [0, 1], "x": 1, "y": 0},

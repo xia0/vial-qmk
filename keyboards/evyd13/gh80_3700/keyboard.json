@@ -10,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": false,
@@ -20,10 +22,6 @@
             "enabled": true,
             "resync": true
         }
-    },
-    "indicators": {
-        "num_lock": "E6",
-        "on_state": 0
     },
     "matrix_pins": {
         "cols": ["B0", "D7", "D6", "D4"],

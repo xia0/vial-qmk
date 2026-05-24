@@ -24,11 +24,9 @@
         "handedness": {
             "pin": "B5"
         },
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2",
     },
     "ws2812": {
         "pin": "D3"
-    }
+    },
 }

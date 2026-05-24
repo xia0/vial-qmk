@@ -1,6 +1,7 @@
 {
     "keyboard_name": "NOP60",
     "manufacturer": "Nasp",
+    "url": "",
     "maintainer": "nasp",
     "usb": {
         "vid": "0x7070",
@@ -11,6 +12,7 @@
         "backlight": true,
         "bootmagic": true,
         "command": true,
+        "console": false,
         "extrakey": true,
         "mousekey": false,
         "nkro": false,
@@ -57,12 +59,11 @@
     "processor": "atmega32u4",
     "bootloader": "atmel-dfu",
     "layout_aliases": {
-        "LAYOUT_2x3u": "LAYOUT_60_ansi_tsangan_split_bs_rshift_split_space",
-        "LAYOUT_7u": "LAYOUT_60_ansi_tsangan_split_bs_rshift",
-        "LAYOUT_60_tsangan_hhkb_split_space": "LAYOUT_60_ansi_tsangan_split_bs_rshift_split_space"
+        "LAYOUT_2x3u": "LAYOUT_60_tsangan_hhkb_split_space",
+        "LAYOUT_7u": "LAYOUT_60_tsangan_hhkb"
     },
     "layouts": {
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift_split_space": {
+        "LAYOUT_60_tsangan_hhkb_split_space": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},
@@ -134,7 +135,7 @@
                 {"matrix": [4, 12], "x": 13.5, "y": 4, "w": 1.5}
             ]
         },
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},

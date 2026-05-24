@@ -30,9 +30,7 @@
                 ]
             }
         },
-        "serial": {
-            "pin": "D3"
-        }
+        "soft_serial_pin": "D3"
     },
     "url": "https://www.rainkeebs.mx",
     "usb": {

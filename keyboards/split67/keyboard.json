@@ -33,10 +33,9 @@
                 "rows": ["D4", "C6", "D7", "E6", "B4"]
             }
         },
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
+    "url": "",
     "usb": {
         "device_version": "1.0.0",
         "pid": "0xBBBC",

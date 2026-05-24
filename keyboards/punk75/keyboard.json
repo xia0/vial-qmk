@@ -1,6 +1,7 @@
 {
     "keyboard_name": "punk75",
     "manufacturer": "dsanchezseco",
+    "url": "",
     "maintainer": "dsanchezseco",
     "usb": {
         "vid": "0xDEED",
@@ -30,10 +31,6 @@
             {"pin_a": "D0", "pin_b": "D1"},
             {"pin_a": "B1", "pin_b": "B0"}
         ]
-    },
-    "indicators": {
-        "caps_lock": "A0",
-        "on_state": 0
     },
     "processor": "atmega32a",
     "bootloader": "usbasploader",

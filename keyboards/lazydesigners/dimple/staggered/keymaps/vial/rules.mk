@@ -3,7 +3,6 @@ VIAL_ENABLE = yes
 LTO_ENABLE = yes
 KEY_OVERRIDE_ENABLE = no
 
-QMK_SETTINGS = no
-CAPS_WORD_ENABLE = no
-LAYER_LOCK_ENABLE = no
-REPEAT_KEY_ENABLE = no
+ifeq ($(strip $(KEYBOARD)), lazydesigners/dimple/staggered/rev1)
+   QMK_SETTINGS = no
+endif

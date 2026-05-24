@@ -3,4 +3,3 @@ VIAL_ENABLE = yes
 LTO_ENABLE = yes
 
 CONSOLE_ENABLE = no
-QMK_SETTINGS = no

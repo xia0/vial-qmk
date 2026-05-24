@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Leaf 60 Hotswap",
     "manufacturer": "Fox Lab",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0x464C",
@@ -10,6 +11,8 @@
     "features": {
         "backlight": true,
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": false,
@@ -58,11 +61,8 @@
     },
     "processor": "atmega32u4",
     "bootloader": "atmel-dfu",
-    "layout_aliases": {
-        "LAYOUT_60_tsangan_hhkb": "LAYOUT_60_ansi_tsangan_split_bs_rshift"
-    },
     "layouts": {
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},

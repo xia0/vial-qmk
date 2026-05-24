@@ -10,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": true,
@@ -29,9 +31,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "ws2812": {
         "pin": "D3"

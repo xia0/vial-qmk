@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Ogre Ergo Split",
     "manufacturer": "ctrlshiftba",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0xFEED",
@@ -9,6 +10,8 @@
     },
     "features": {
         "bootmagic": false,
+        "command": false,
+        "console": false,
         "extrakey": false,
         "mousekey": false,
         "nkro": false,
@@ -21,12 +24,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "D1"
-        },
-        "serial": {
-            "pin": "D3"
-        }
+        "soft_serial_pin": "D3"
     },
     "rgblight": {
         "led_count": 14,

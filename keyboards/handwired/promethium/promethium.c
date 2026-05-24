@@ -1,22 +1,23 @@
-#include "keyboard.h"
+#include "promethium.h"
+#include "analog.h"
 #include "timer.h"
-#include "battery.h"
+#include "matrix.h"
+#include "bluefruit_le.h"
 
-#ifndef BATTERY_POLL
-#    define BATTERY_POLL 30000
-#endif
+// cubic fit {3.3, 0}, {3.5, 2.9}, {3.6, 5}, {3.7, 8.6}, {3.8, 36},  {3.9, 62}, {4.0, 73}, {4.05, 83}, {4.1, 89}, {4.15, 94}, {4.2, 100}
 
 uint8_t battery_level(void) {
-    // maintain legacy behaviour and scale 0-100 percent to 0-255
-    uint16_t percent = battery_get_percent();
-    return  (percent * 255) / 100;
+    float voltage = bluefruit_le_read_battery_voltage() * 2 * 3.3 / 1024;
+    if (voltage < MIN_VOLTAGE) return 0;
+    if (voltage > MAX_VOLTAGE) return 255;
+    return (voltage - MIN_VOLTAGE) / (MAX_VOLTAGE - MIN_VOLTAGE) * 255;
 }
 
 __attribute__ ((weak))
 void battery_poll(uint8_t level) {
 }
 
-void housekeeping_task_kb(void) {
+void matrix_scan_kb(void) {
     static uint16_t counter = BATTERY_POLL;
     counter++;
 
@@ -24,4 +25,6 @@ void housekeeping_task_kb(void) {
         counter = 0;
         battery_poll(battery_level());
     }
+
+    matrix_scan_user();
 }

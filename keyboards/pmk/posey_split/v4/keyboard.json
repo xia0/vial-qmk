@@ -10,6 +10,8 @@
     "features": {
         "bootmagic": true,
         "rgblight": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
@@ -40,9 +42,6 @@
         "enabled": true,
         "handedness": {
             "pin": "GP18"
-        },
-        "serial": {
-            "driver": "vendor"
         }
     },
     "tags": ["split"],

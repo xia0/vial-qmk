@@ -17,7 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define RGBLIGHT_DEFAULT_MODE RGBLIGHT_MODE_RGB_TEST
+/* Split hand configration */
+#define MASTER_LEFT
+
+  #define RGBLIGHT_DEFAULT_MODE RGBLIGHT_MODE_RGB_TEST
 
 /* Custom font */
 #define OLED_FONT_H "keyboards/rura66/common/glcdfont.c"

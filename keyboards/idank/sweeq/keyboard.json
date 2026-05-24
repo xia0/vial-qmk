@@ -11,6 +11,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
@@ -22,9 +24,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "community_layouts": ["split_3x5_2"],
     "layout_aliases": {

@@ -23,9 +23,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D3"
-        }
+        "soft_serial_pin": "D3"
     },
     "processor": "atmega32u4",
     "bootloader": "caterina",

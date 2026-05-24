@@ -11,6 +11,7 @@
     "features": {
         "bootmagic": false,
         "command": true,
+        "console": false,
         "extrakey": true,
         "mousekey": false,
         "nkro": false,
@@ -35,12 +36,7 @@
     },
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "D2"
-        },
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
     "rgblight": {
         "led_count": 14,

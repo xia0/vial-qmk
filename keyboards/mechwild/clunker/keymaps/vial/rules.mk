@@ -8,5 +8,3 @@ ifeq ($(strip $(CONVERT_TO)), )
     SPACE_CADET_ENABLE = no
     #TAP_DANCE_ENABLE = no    # if space becomes an issue, uncomment
 endif
-
-QMK_SETTINGS = no

@@ -6,6 +6,8 @@
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
@@ -23,10 +25,7 @@
                 "rows": ["GP5", "GP6", "GP7", "GP8", "GP9"]
             }
         },
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP3"
-        }
+        "soft_serial_pin": "GP3"
     },
     "url": "https://github.com/gregandcin/teaqueen",
     "usb": {

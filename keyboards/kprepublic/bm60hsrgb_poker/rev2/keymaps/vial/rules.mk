@@ -7,7 +7,7 @@ VIAL_ENABLE = yes
 
 COMBO_ENABLE = yes
 TAP_DANCE_ENABLE = yes
-QMK_SETTINGS = no
+QMK_SETTINGS = yes
 KEY_OVERRIDE_ENABLE = yes
 
 MOUSEKEY_ENABLE = no       # Mouse keys

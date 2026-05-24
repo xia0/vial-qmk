@@ -17,10 +17,7 @@
                 ]
             }
         },
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP1"
-        },
+        "soft_serial_pin": "GP1",
         "handedness": {
             "pin": "GP9"
         }

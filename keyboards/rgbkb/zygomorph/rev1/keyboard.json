@@ -93,9 +93,7 @@
     },
     "split": {
       "enabled": true,
-      "serial": {
-        "pin": "D3"
-      }
+      "soft_serial_pin": "D3"
     },
     "rgblight": {
       "split_count": [30, 30],

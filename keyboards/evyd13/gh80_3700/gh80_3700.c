@@ -15,16 +15,24 @@
  */
 #include "quantum.h"
 
-void keyboard_pre_init_kb(void) {
+void led_init_ports(void) {
+  gpio_set_pin_output(E6);
   gpio_set_pin_output(B1);
   gpio_set_pin_output(D0);
   gpio_set_pin_output(D1);
   gpio_set_pin_output(F0);
   
+  gpio_write_pin_high(E6);
   gpio_write_pin_high(B1);
   gpio_write_pin_high(D0);
   gpio_write_pin_high(D1);
   gpio_write_pin_high(F0);
+}
 
-  keyboard_pre_init_user();
+bool led_update_kb(led_t led_state) {
+  if(led_update_user(led_state)) {
+    gpio_write_pin(E6, !led_state.num_lock);
+  }
+
+  return true;
 }

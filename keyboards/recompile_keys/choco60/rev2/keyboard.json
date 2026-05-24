@@ -12,12 +12,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "D1"
-        },
-        "serial": {
-            "pin": "D0"
-        },
+        "soft_serial_pin": "D0",
         "matrix_pins": {
             "right": {
                 "cols": ["C7", "B7", "B6", "B5", "B4", "B3", "B2", "C6", "D4"],

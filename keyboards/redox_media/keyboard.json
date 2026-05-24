@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Redox Media",
     "manufacturer": "shiftux",
+    "url": "",
     "maintainer": "shiftux",
     "usb": {
         "vid": "0xFEED",
@@ -32,9 +33,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
     "processor": "atmega32u4",
     "bootloader": "caterina",

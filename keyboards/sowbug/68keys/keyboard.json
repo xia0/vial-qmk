@@ -58,11 +58,12 @@
             "solid_multisplash": true
         },
         "driver": "ws2812",
-        "max_brightness": 128,
-        "sleep": true
+        "max_brightness": 128
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,

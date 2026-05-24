@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Capsule65i",
     "manufacturer": "PixelSpace",
+    "url": "",
     "maintainer": "PixelSpace",
     "usb": {
         "vid": "0xE061",
@@ -9,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": true,
+        "console": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": false,
@@ -34,6 +37,7 @@
             "knight": true,
             "christmas": true,
             "static_gradient": true,
+            "rgb_test": true,
             "alternating": true,
             "twinkle": true
         }

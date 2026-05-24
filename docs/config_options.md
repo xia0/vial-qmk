@@ -140,6 +140,8 @@ If you define these options you will enable the associated feature, which may in
 
 * `#define ENABLE_COMPILE_KEYCODE`
   * Enables the `QK_MAKE` keycode
+* `#define FORCE_NKRO`
+  * NKRO by default requires to be turned on, this forces it on during keyboard startup regardless of EEPROM setting. NKRO can still be turned off but will be turned on again if the keyboard reboots.
 * `#define STRICT_LAYER_RELEASE`
   * force a key release to be evaluated using the current layer stack instead of remembering which layer it came from (used for advanced cases)
 
@@ -399,7 +401,6 @@ This is a [make](https://www.gnu.org/software/make/manual/make.html) file that i
   * `atmel-dfu`
   * `lufa-dfu`
   * `qmk-dfu`
-  * `qmk-hid`
   * `halfkay`
   * `caterina`
   * `bootloadhid`
@@ -412,7 +413,7 @@ Use these to enable or disable building certain features. The more you have enab
 * `MAGIC_ENABLE`
   * MAGIC actions (BOOTMAGIC without the boot)
 * `BOOTMAGIC_ENABLE`
-  * Enable Bootmagic
+  * Enable Bootmagic Lite
 * `MOUSEKEY_ENABLE`
   * Mouse keys
 * `EXTRAKEY_ENABLE`
@@ -425,6 +426,8 @@ Use these to enable or disable building certain features. The more you have enab
   * Key combo feature
 * `NKRO_ENABLE`
   * USB N-Key Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
+* `RING_BUFFERED_6KRO_REPORT_ENABLE`
+  * USB 6-Key Rollover - Instead of stopping any new input once 6 keys are pressed, the oldest key is released and the new key is pressed.
 * `AUDIO_ENABLE`
   * Enable the audio subsystem.
 * `KEY_OVERRIDE_ENABLE`

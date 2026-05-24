@@ -1,6 +1,7 @@
 {
     "keyboard_name": "BM40 Hotswap RGB",
     "manufacturer": "KPRepublic",
+    "url": "",
     "maintainer": "qmk",
     "features": {
         "bootmagic": true,
@@ -9,10 +10,9 @@
         "rgblight": true,
         "rgb_matrix": true,
         "tri_layer": true,
+        "console": false,
+        "command": false,
         "nkro": false
-    },
-    "build": {
-        "lto": true
     },
     "usb": {
         "vid": "0x4B50",

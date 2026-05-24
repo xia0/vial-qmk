@@ -10,6 +10,8 @@
     },
     "features": {
         "bootmagic": false,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": false,
         "nkro": false
@@ -21,12 +23,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "D3"
-        },
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "processor": "atmega32u4",
     "bootloader": "caterina",

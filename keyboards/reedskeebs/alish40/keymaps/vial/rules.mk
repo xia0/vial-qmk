@@ -9,5 +9,3 @@ ifeq ($(strip $(CONVERT_TO)), )
     MAGIC_ENABLE = no
     SPACE_CADET_ENABLE = no
 endif
-
-QMK_SETTINGS = no

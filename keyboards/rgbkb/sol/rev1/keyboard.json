@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Sol",
     "manufacturer": "RGBKB",
+    "url": "",
     "maintainer": "Legonut",
     "usb": {
         "vid": "0xFEED",
@@ -91,9 +92,7 @@
     },
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D3"
-        }
+        "soft_serial_pin": "D3"
     },
     "tapping": {
         "term": 150

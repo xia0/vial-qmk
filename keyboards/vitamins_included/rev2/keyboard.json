@@ -15,12 +15,7 @@
     },
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "B4"
-        },
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
     "rgblight": {
         "led_count": 12,

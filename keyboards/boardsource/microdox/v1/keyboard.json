@@ -10,9 +10,7 @@
     "device_version": "1.0.0"
   },
   "split": {
-    "serial": {
-      "pin": "D2"
-    }
+    "soft_serial_pin": "D2"
   },
   "rgblight": {
     "sleep": true,

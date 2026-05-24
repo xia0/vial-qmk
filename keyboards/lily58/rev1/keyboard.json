@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Lily58",
     "manufacturer": "liliums",
+    "url": "",
     "maintainer": "liliums",
     "usb": {
         "vid": "0x04D8",
@@ -17,9 +18,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "rgblight": {
         "led_count": 12

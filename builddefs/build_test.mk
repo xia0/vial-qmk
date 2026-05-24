@@ -7,7 +7,6 @@ endif
 OPT = g
 
 include paths.mk
-include $(BUILDDEFS_PATH)/support.mk
 include $(BUILDDEFS_PATH)/message.mk
 
 TARGET=test/$(TEST_OUTPUT)
@@ -48,8 +47,7 @@ PLATFORM:=TEST
 PLATFORM_KEY:=test
 BOOTLOADER_TYPE:=none
 
-DEBUG ?= 0
-ifneq ($(strip $(DEBUG)), 0)
+ifeq ($(strip $(DEBUG)), 1)
 CONSOLE_ENABLE = yes
 endif
 

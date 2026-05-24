@@ -1,6 +1,7 @@
 {
     "keyboard_name": "hbcp",
     "manufacturer": "hineybush",
+    "url": "",
     "maintainer": "hineybush",
     "usb": {
         "vid": "0x04D8",
@@ -15,9 +16,6 @@
         "pin": "B0"
     },
     "rgblight": {
-        "default": {
-            "val": 128
-        },
         "saturation_steps": 8,
         "brightness_steps": 8,
         "led_count": 27,

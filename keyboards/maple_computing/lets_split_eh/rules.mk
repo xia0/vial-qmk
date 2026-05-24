@@ -1,2 +1,1 @@
-# Disable unsupported hardware
-AUDIO_SUPPORTED = no
+DEFAULT_FOLDER = maple_computing/lets_split_eh/eh

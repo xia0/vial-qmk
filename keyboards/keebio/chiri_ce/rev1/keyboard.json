@@ -124,13 +124,8 @@
                 "rows": ["GP24", "GP23", "GP21", "GP3"]
             }
         },
-        "serial": {
-            "driver": "vendor"
-        },
         "transport": {
-            "sync": {
-                "matrix_state": true
-            }
+            "sync_matrix_state": true
         }
     },
     "usb": {

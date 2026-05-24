@@ -1,6 +1,7 @@
 {
   "keyboard_name": "The Ave. Ortholinear",
   "manufacturer": "Kingly-Keys",
+  "url": "",
   "maintainer": "the-royal",
   "usb": {
       "vid": "0x4B4B",
@@ -9,6 +10,8 @@
   },
   "features": {
     "bootmagic": true,
+    "command": false,
+    "console": false,
     "encoder": true,
     "extrakey": true,
     "mousekey": true,
@@ -42,13 +45,8 @@
   },
   "processor": "atmega32u4",
   "bootloader": "atmel-dfu",
-  "layout_aliases": {
-    "LAYOUT_ortho_all": "LAYOUT_all",
-    "LAYOUT_ortho_2x2u": "LAYOUT_2x2u_space",
-    "LAYOUT_ortho_big_boy": "LAYOUT_7u_space"
-  },
   "layouts": {
-    "LAYOUT_all": {
+    "LAYOUT_ortho_all": {
        "layout": [
           {"matrix": [0, 0], "x": 0, "y": 0},
           {"matrix": [0, 1], "x": 1.5, "y": 0},
@@ -113,7 +111,7 @@
           {"matrix": [4, 12], "x": 12.5, "y": 4.5}
       ]
     },
-    "LAYOUT_2x2u_space": {
+    "LAYOUT_ortho_2x2u": {
         "layout": [
           {"matrix": [0, 0], "x": 0, "y": 0},
           {"matrix": [0, 1], "x": 1.5, "y": 0},
@@ -176,7 +174,7 @@
           {"matrix": [4, 12], "x": 12.5, "y": 4.5}
        ]
      },
-     "LAYOUT_7u_space": {
+     "LAYOUT_ortho_big_boy": {
         "layout": [
           {"matrix": [0, 0], "x": 0, "y": 0},
           {"matrix": [0, 1], "x": 1.5, "y": 0},

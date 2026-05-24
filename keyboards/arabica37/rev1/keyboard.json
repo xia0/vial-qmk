@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Arabica3/7",
     "manufacturer": "CalciumNitride",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0xFEED",
@@ -20,9 +21,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "rgblight": {
         "led_count": 50,

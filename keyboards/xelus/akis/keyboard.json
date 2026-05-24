@@ -21,9 +21,6 @@
             "rgb_test": true,
             "alternating": true,
             "twinkle": true
-        },
-        "default": {
-            "animation": "rgb_test"
         }
     },
     "ws2812": {
@@ -34,6 +31,7 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
         "console": true,
         "extrakey": true,
         "mousekey": true,

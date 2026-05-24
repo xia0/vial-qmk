@@ -30,18 +30,11 @@
     "diode_direction": "ROW2COL",
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "B9"
-        },
-        "serial": {
-            "driver": "usart",
-            "pin": "A9"
-        }
+        "soft_serial_pin": "A9"
     },
     "processor": "STM32F401",
     "bootloader": "stm32-dfu",
     "board": "BLACKPILL_STM32_F401",
-    "community_layouts": ["ergodox"],
     "layouts": {
         "LAYOUT_ergodox": {
             "layout": [

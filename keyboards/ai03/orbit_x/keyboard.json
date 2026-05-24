@@ -1,6 +1,7 @@
 {
     "keyboard_name": "OrbitX",
     "manufacturer": "ai03 Design Studio",
+    "url": "",
     "maintainer": "ai03",
     "usb": {
         "vid": "0xA103",
@@ -27,17 +28,12 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "handedness": {
-            "pin": "D5"
-        },
+        "soft_serial_pin": "D0",
         "matrix_pins": {
             "right": {
                 "cols": ["D6", "B6", "B1", "B0", "B3", "B2"],
                 "rows": ["B5", "D7", "B4", "D4"]
             }
-        },
-        "serial": {
-            "pin": "D0"
         }
     },
     "processor": "atmega32u4",

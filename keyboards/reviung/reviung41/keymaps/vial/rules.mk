@@ -11,5 +11,3 @@ else
 	# Enable Mouse Keys when when not using a ProMicro as there will be space:
 	MOUSEKEY_ENABLE = yes
 endif
-LAYER_LOCK_ENABLE = no
-REPEAT_KEY_ENABLE = no

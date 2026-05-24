@@ -10,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": true,
@@ -34,11 +36,8 @@
     },
     "processor": "STM32F303",
     "bootloader": "stm32-dfu",
-    "layout_aliases": {
-        "LAYOUT_all": "LAYOUT"
-    },
     "layouts": {
-        "LAYOUT": {
+        "LAYOUT_all": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
 

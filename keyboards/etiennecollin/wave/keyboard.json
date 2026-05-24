@@ -19,6 +19,8 @@
 
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
@@ -35,9 +37,7 @@
     "community_layouts": ["split_3x5_3"],
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        },
+        "soft_serial_pin": "D2",
         "usb_detect": {
             "enabled": true
         },

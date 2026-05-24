@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Think6.5\u00b0",
     "manufacturer": "Graystudio",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0x4753",
@@ -39,10 +40,6 @@
         "mousekey": true,
         "nkro": false,
         "rgblight": true
-    },
-    "indicators": {
-        "caps_lock": "C7",
-        "on_state": 0
     },
     "matrix_pins": {
         "cols": ["D1", "D0", "D2", "D3", "D5", "D4", "D6", "D7", "B4", "B5", "F0", "F1", "B6", "F4", "F5", "F6"],

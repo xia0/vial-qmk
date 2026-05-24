@@ -9,9 +9,6 @@
     "device_version": "0.0.1"
   },
   "backlight": {
-    "default": {
-      "brightness": 5
-    },
     "pin": "B5",
     "levels": 7,
     "breathing": true
@@ -65,6 +62,8 @@
   "features": {
     "backlight": true,
     "bootmagic": true,
+    "command": false,
+    "console": false,
     "encoder": true,
     "extrakey": true,
     "mousekey": true,

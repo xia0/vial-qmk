@@ -15,9 +15,7 @@
     "diode_direction": "COL2ROW",
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
     "rgblight": {
         "saturation_steps": 8,
@@ -31,9 +29,6 @@
             "knight": true,
             "christmas": true,
             "static_gradient": true
-        },
-        "default": {
-            "animation": "rainbow_swirl"
         }
     },
     "ws2812": {

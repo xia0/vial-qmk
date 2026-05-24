@@ -1,12 +1,7 @@
 {
     "keyboard_name": "Viterbi Rev. 2",
     "split": {
-        "handedness": {
-            "pin": "D2"
-        },
-        "serial": {
-            "pin": "D0"
-        }
+        "soft_serial_pin": "D0"
     },
     "usb": {
         "pid": "0x2157",

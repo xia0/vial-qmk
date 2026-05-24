@@ -1,16 +1,12 @@
 {
   "keyboard_name": "G4M3Ralpha",
   "manufacturer": "Worldspawn00",
+  "url": "",
   "maintainer": "Worldspawn00",
   "usb": {
     "vid": "0x5753",
     "pid": "0x56D9",
     "device_version": "0.0.1"
-  },
-  "indicators": {
-    "caps_lock": "D0",
-    "num_lock": "D3",
-    "scroll_lock": "D2"
   },
   "rgblight": {
     "saturation_steps": 8,
@@ -34,6 +30,8 @@
   },
   "features": {
     "bootmagic": true,
+    "command": false,
+    "console": false,
     "extrakey": true,
     "mousekey": true,
     "nkro": true,
@@ -50,7 +48,8 @@
     "rows": ["D4", "B4", "B5", "D1"]
   },
   "diode_direction": "COL2ROW",
-  "development_board": "promicro",
+  "processor": "atmega32u4",
+  "bootloader": "caterina",
   "layouts": {
     "LAYOUT": {
       "layout": [

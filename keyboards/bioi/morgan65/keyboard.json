@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Morgan65",
     "manufacturer": "Basic IO Instruments",
+    "url": "",
     "maintainer": "scottywei",
     "usb": {
         "vid": "0x8101",
@@ -33,10 +34,6 @@
     "backlight": {
       "pin": "B6",
       "levels": 12
-    },
-    "indicators": {
-        "caps_lock": "F0",
-        "on_state": 0
     },
     "rgblight": {
         "saturation_steps": 8,

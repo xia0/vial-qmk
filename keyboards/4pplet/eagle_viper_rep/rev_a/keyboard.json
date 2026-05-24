@@ -64,16 +64,12 @@
         "60_ansi",
         "60_ansi_split_bs_rshift",
         "60_ansi_tsangan",
-        "60_ansi_tsangan_split_bs_rshift",
+        "60_tsangan_hhkb",
         "60_hhkb",
         "60_iso",
         "60_iso_split_bs_rshift",
-        "60_iso_tsangan",
-        "60_iso_tsangan_split_bs_rshift"
+        "60_iso_tsangan"
     ],
-    "layout_aliases": {
-        "LAYOUT_60_tsangan_hhkb": "LAYOUT_60_ansi_tsangan_split_bs_rshift"
-    },
     "layouts": {
         "LAYOUT_all": {
             "layout": [
@@ -356,7 +352,7 @@
                 {"label": "Ctrl", "matrix": [8, 6], "x": 13.5, "y": 4, "w": 1.5}
             ]
         },
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"label": "Esc", "matrix": [0, 0], "x": 0, "y": 0},
                 {"label": "!", "matrix": [1, 0], "x": 1, "y": 0},

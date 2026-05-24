@@ -1,6 +1,7 @@
 {
   "keyboard_name": "Meme",
   "manufacturer": "Switchmod Keyboards",
+  "url": "",
   "maintainer": "qmk",
   "usb": {
     "vid": "0xFEED",
@@ -32,15 +33,8 @@
   },
   "processor": "atmega32u2",
   "bootloader": "atmel-dfu",
-  "community_layouts": ["65_ansi", "65_ansi_split_bs", "65_ansi_blocker", "65_ansi_blocker_split_bs"],
-  "layout_aliases": {
-    "LAYOUT_normie": "LAYOUT_65_ansi",
-    "LAYOUT_spicy": "LAYOUT_65_ansi_split_bs",
-    "LAYOUT_dank": "LAYOUT_65_ansi_blocker",
-    "LAYOUT_meme": "LAYOUT_65_ansi_blocker_split_bs",
-  },
   "layouts": {
-    "LAYOUT_65_ansi_split_bs": {
+    "LAYOUT_spicy": {
       "layout": [
         {"matrix": [0, 0], "x": 0, "y": 0},
         {"matrix": [1, 0], "x": 1, "y": 0},
@@ -117,7 +111,7 @@
         {"matrix": [9, 7], "x": 15, "y": 4}
       ]
     },
-    "LAYOUT_65_ansi": {
+    "LAYOUT_normie": {
       "layout": [
         {"matrix": [0, 0], "x": 0, "y": 0},
         {"matrix": [1, 0], "x": 1, "y": 0},
@@ -193,7 +187,7 @@
         {"matrix": [9, 7], "x": 15, "y": 4}
       ]
     },
-    "LAYOUT_65_ansi_blocker": {
+    "LAYOUT_dank": {
       "layout": [
         {"matrix": [0, 0], "x": 0, "y": 0},
         {"matrix": [1, 0], "x": 1, "y": 0},
@@ -268,7 +262,7 @@
         {"matrix": [9, 7], "x": 15, "y": 4}
       ]
     },
-    "LAYOUT_65_ansi_blocker_split_bs": {
+    "LAYOUT_meme": {
       "layout": [
         {"matrix": [0, 0], "x": 0, "y": 0},
         {"matrix": [1, 0], "x": 1, "y": 0},

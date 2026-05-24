@@ -120,16 +120,14 @@
             "matrix": [4, 7]
         },
         "enabled": true,
+        "main": "matrix_grid",
         "matrix_pins": {
             "right": {
                 "cols": ["GP7", "GP8", "GP9", "GP11", "GP12", "GP13", "GP14", "GP15"],
                 "rows": ["GP2", "GP3", "GP4", "GP5", "GP6"]
             }
         },
-        "serial": {
-            "driver": "vendor",
-            "pin": "GP1"
-        }
+        "soft_serial_pin": "GP1"
     },
     "url": "https://aidansmith.dev",
     "usb": {

@@ -29,10 +29,12 @@ void matrix_init_kb(void)
 #endif
 }
 
-void housekeeping_task_kb(void) {
+void matrix_scan_kb(void)
+{
 #ifdef WATCHDOG_ENABLE
     wdt_reset();
 #endif
+    matrix_scan_user();
 }
 
 void click(uint16_t freq, uint16_t duration){
@@ -54,19 +56,17 @@ bool process_record_kb(uint16_t keycode, keyrecord_t* record)
     if (click_toggle && record->event.pressed){
         click(click_hz, click_time);
     }
+    if (keycode == QK_BOOT) {
+        reset_keyboard_kb();
+    }
     return process_record_user(keycode, record);
 }
 
-bool shutdown_kb(bool jump_to_bootloader) {
+void reset_keyboard_kb(void){
 #ifdef WATCHDOG_ENABLE
-    // Unconditionally run so shutdown_user can't mess up watchdog
     MCUSR = 0;
     wdt_disable();
     wdt_reset();
 #endif
-
-    if (!shutdown_user(jump_to_bootloader)) {
-        return false;
-    }
-    return true;
+    reset_keyboard();
 }

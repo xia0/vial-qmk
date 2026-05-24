@@ -25,8 +25,6 @@
 *.la
 *.stackdump
 *.sym
-index.html
-firmware_list.json
 
 # QMK-specific
 api_data/v1

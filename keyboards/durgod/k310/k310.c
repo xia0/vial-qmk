@@ -87,6 +87,4 @@ void keyboard_pre_init_kb(void) {
         bootloader_jump();
     }
 #endif
-
-    keyboard_pre_init_user();
 }

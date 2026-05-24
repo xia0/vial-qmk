@@ -1,6 +1,7 @@
 {
     "keyboard_name": "280",
     "manufacturer": "Noxary",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0x4E58",
@@ -30,10 +31,6 @@
     "backlight": {
         "pin": "B7",
         "breathing": true
-    },
-    "indicators": {
-        "caps_lock": "D5",
-        "scroll_lock": "D0"
     },
     "processor": "atmega32u4",
     "bootloader": "atmel-dfu",

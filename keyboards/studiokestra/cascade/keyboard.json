@@ -32,6 +32,7 @@
     "features": {
         "bootmagic": true,
         "command": true,
+        "console": false,
         "extrakey": true,
         "mousekey": false,
         "nkro": true,
@@ -50,9 +51,6 @@
     "diode_direction": "COL2ROW",
     "processor": "atmega32u4",
     "bootloader": "atmel-dfu",
-    "layout_aliases": {
-        "LAYOUT_60_tsangan_hhkb": "LAYOUT_60_ansi_tsangan_split_bs_rshift"
-    },
     "layouts": {
         "LAYOUT_all": {
             "layout": [
@@ -194,7 +192,7 @@
                 {"matrix": [4, 13], "x": 13.75, "y": 4, "w": 1.25}
             ]
         },
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},

@@ -8,9 +8,7 @@
     "rows": ["C6", "D7", "E6", "B4", "B5"]
   },
   "split": {
-    "serial": {
-      "pin": "D2"
-    }
+    "soft_serial_pin": "D2"
   },
   "ws2812": {
      "pin": "D3"

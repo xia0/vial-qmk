@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Mona",
     "manufacturer": "RMI-KB",
+    "url": "",
     "maintainer": "ramonimbao",
     "usb": {
         "vid": "0xB16B",
@@ -23,9 +24,6 @@
     },
     "processor": "atmega32u4",
     "bootloader": "atmel-dfu",
-    "layout_aliases": {
-        "LAYOUT_60_tsangan_hhkb": "LAYOUT_60_ansi_tsangan_split_bs_rshift"
-    },
     "layouts": {
         "LAYOUT_60_ansi": {
             "layout": [
@@ -96,7 +94,7 @@
                 {"matrix": [4, 14], "x": 13.75, "y": 4, "w": 1.25}
             ]
         },
-        "LAYOUT_60_ansi_tsangan_split_bs_rshift": {
+        "LAYOUT_60_tsangan_hhkb": {
             "layout": [
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},

@@ -7,6 +7,8 @@
     "processor": "RP2040",
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "rgb_matrix": true
@@ -20,9 +22,6 @@
         "vid": "0x6F75"
     },
     "split": {
-        "serial": {
-            "driver": "vendor"
-        },
         "transport": {
             "sync": {
                 "matrix_state": true

@@ -4,7 +4,7 @@
   "url": "https://github.com/nrtkbb/Keyboards/tree/master/uzu42",
   "maintainer": "nrtkbb",
   "usb": {
-    "vid": "0x6E74",
+    "vid": "0xFEED",
     "pid": "0x3060",
     "device_version": "0.0.1"
   },
@@ -22,9 +22,7 @@
   "diode_direction": "COL2ROW",
   "split": {
     "enabled": true,
-    "serial": {
-      "pin": "D2"
-    }
+    "soft_serial_pin": "D2"
   },
   "ws2812": {
     "pin": "D3"
@@ -45,7 +43,8 @@
       "twinkle": true
     }
   },
-  "development_board": "promicro",
+  "processor": "atmega32u4",
+  "bootloader": "caterina",
   "layouts": {
     "LAYOUT": {
       "layout": [

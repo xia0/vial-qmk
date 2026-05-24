@@ -10,6 +10,7 @@
     },
     "features": {
         "bootmagic": false,
+        "command": false,
         "console": true,
         "encoder": true,
         "extrakey": true,
@@ -32,9 +33,6 @@
         "rotary": [
             {"pin_a": "D5", "pin_b": "F1"}
         ]
-    },
-    "indicators": {
-        "caps_lock": "F0"
     },
     "rgblight": {
         "saturation_steps": 8,

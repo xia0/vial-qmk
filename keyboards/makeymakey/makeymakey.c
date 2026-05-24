@@ -108,8 +108,9 @@ void cycle_leds(void) {
     }
 }
 
-void housekeeping_task_kb(void) {
+void matrix_scan_kb(void) {
     cycle_leds();
+    matrix_scan_user();
 }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {

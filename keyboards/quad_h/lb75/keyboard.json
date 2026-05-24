@@ -1,6 +1,7 @@
 {
     "keyboard_name": "LB75",
     "manufacturer": "QUADH",
+    "url": "",
     "maintainer": "ai03",
     "usb": {
         "vid": "0xA103",
@@ -11,6 +12,7 @@
         "backlight": true,
         "bootmagic": true,
         "command": true,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,
@@ -30,11 +32,6 @@
     "backlight": {
         "pin": "B7",
         "levels": 5
-    },
-    "indicators": {
-        "caps_lock": "B1",
-        "scroll_lock": "B2",
-        "on_state": 0
     },
     "ws2812": {
         "pin": "B0"

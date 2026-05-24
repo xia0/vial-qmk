@@ -34,21 +34,21 @@ static pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
 
 #define ROWS_PER_HAND (MATRIX_ROWS)
 
-static inline void gpio_atomic_set_pin_output_low(pin_t pin) {
+static inline void setPinOutput_writeLow(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
         gpio_set_pin_output(pin);
         gpio_write_pin_low(pin);
     }
 }
 
-static inline void gpio_atomic_set_pin_output_high(pin_t pin) {
+static inline void setPinOutput_writeHigh(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
         gpio_set_pin_output(pin);
         gpio_write_pin_high(pin);
     }
 }
 
-static inline void gpio_atomic_set_pin_input_high(pin_t pin) {
+static inline void setPinInputHigh_atomic(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
         gpio_set_pin_input_high(pin);
     }
@@ -113,7 +113,7 @@ static bool select_col(uint8_t col) {
     pin_t pin = col_pins[col];
 
     if (pin != NO_PIN) {
-        gpio_atomic_set_pin_output_low(pin);
+        setPinOutput_writeLow(pin);
         return true;
     } else {
         if (col == 10) {
@@ -129,9 +129,9 @@ static void unselect_col(uint8_t col) {
 
     if (pin != NO_PIN) {
 #ifdef MATRIX_UNSELECT_DRIVE_HIGH
-        gpio_atomic_set_pin_output_high(pin);
+        setPinOutput_writeHigh(pin);
 #else
-        gpio_atomic_set_pin_input_high(pin);
+        setPinInputHigh_atomic(pin);
 #endif
     } else {
         shiftOut_single(0x01);
@@ -143,9 +143,9 @@ static void unselect_cols(void) {
         pin_t pin = col_pins[x];
         if (pin != NO_PIN) {
 #ifdef MATRIX_UNSELECT_DRIVE_HIGH
-            gpio_atomic_set_pin_output_high(pin);
+            setPinOutput_writeHigh(pin);
 #else
-            gpio_atomic_set_pin_input_high(pin);
+            setPinInputHigh_atomic(pin);
 #endif
         } else {
             if (x == 10)
@@ -169,7 +169,7 @@ static void matrix_init_pins(void) {
     unselect_cols();
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
         if (row_pins[x] != NO_PIN) {
-            gpio_atomic_set_pin_input_high(row_pins[x]);
+            setPinInputHigh_atomic(row_pins[x]);
         }
     }
 }

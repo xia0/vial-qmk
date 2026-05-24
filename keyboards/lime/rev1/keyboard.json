@@ -20,15 +20,13 @@
     },
     "split": {
         "enabled": true,
+        "soft_serial_pin": "D2",
         "encoder": {
             "right": {
                 "rotary": [
                     {"pin_a": "F4", "pin_b": "F5", "resolution": 2}
                 ]
             }
-        },
-        "serial": {
-            "pin": "D2"
         },
         "transport": {
             "sync": {

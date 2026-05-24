@@ -54,12 +54,12 @@
       "solid_splash": true,
       "solid_multisplash": true
     },
-    "driver": "is31fl3731",
-    "sleep": true
+    "driver": "is31fl3731"
   },
   "features": {
     "audio": true,
     "bootmagic": true,
+    "command": false,
     "console": true,
     "extrakey": true,
     "midi": true,

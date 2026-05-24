@@ -4,7 +4,3 @@ VIAL_ENABLE = yes
 # Reduce firmware size:
 LTO_ENABLE = yes
 QMK_SETTINGS = no
-
-CAPS_WORD_ENABLE = no
-LAYER_LOCK_ENABLE = no
-REPEAT_KEY_ENABLE = no

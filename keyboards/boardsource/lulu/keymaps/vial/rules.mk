@@ -12,6 +12,4 @@ ifeq ($(strip $(CONVERT_TO)), )
     GRAVE_ESC_ENABLE = no
     KEY_OVERRIDE_ENABLE = no
     MAGIC_ENABLE = no
-    LAYER_LOCK_ENABLE = no
-    REPEAT_KEY_ENABLE = no
 endif

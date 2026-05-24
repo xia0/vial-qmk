@@ -1,6 +1,7 @@
 {
     "keyboard_name": "PhysiX",
     "manufacturer": "LZ",
+    "url": "",
     "maintainer": "hineybush",
     "usb": {
         "vid": "0x04D8",
@@ -10,6 +11,8 @@
     "features": {
         "backlight": true,
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": false,
@@ -29,10 +32,6 @@
     "backlight": {
         "pin": "B7",
         "breathing": true
-    },
-    "indicators": {
-        "caps_lock": "D3",
-        "scroll_lock": "D5"
     },
     "rgblight": {
         "saturation_steps": 8,

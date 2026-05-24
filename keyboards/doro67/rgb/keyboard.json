@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Doro67 RGB",
     "manufacturer": "Backprop Studio",
+    "url": "",
     "maintainer": "qmk",
     "usb": {
         "vid": "0x4250",
@@ -38,6 +39,8 @@
         "pixel_rain": true,
         "pixel_flow": true,
         "pixel_fractal": true,
+        "typing_heatmap": true,
+        "digital_rain": true,
         "solid_reactive_simple": true,
         "solid_reactive": true,
         "solid_reactive_wide": true,
@@ -55,6 +58,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "extrakey": true,
         "mousekey": true,
         "nkro": false,

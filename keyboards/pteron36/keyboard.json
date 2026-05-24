@@ -1,6 +1,7 @@
 {
     "keyboard_name": "Pteron36",
     "manufacturer": "Harshit Goel",
+    "url": "",
     "maintainer": "harshitgoel96",
     "usb": {
         "vid": "0x4847",
@@ -9,6 +10,8 @@
     },
     "features": {
         "bootmagic": true,
+        "command": false,
+        "console": false,
         "encoder": true,
         "extrakey": true,
         "mousekey": true,
@@ -37,15 +40,13 @@
     },
     "split": {
         "enabled": true,
+        "soft_serial_pin": "D3",
         "encoder": {
             "right": {
                 "rotary": [
                     {"pin_a": "F4", "pin_b": "F5"}
                 ]
             }
-        },
-        "serial": {
-            "pin": "D3"
         }
     },
     "rgblight": {
