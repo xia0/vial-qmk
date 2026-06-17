@@ -44,23 +44,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void keyboard_post_init_user(void) {
-  gpio_write_pin_high(GP27);  // menu
-  gpio_write_pin_high(GP28);  // option
-  gpio_write_pin_high(GP29);  // start
-  gpio_write_pin_high(GP0);   // select
-  gpio_write_pin_high(GP1);   // up
-  gpio_write_pin_high(GP2);   // down
-  gpio_write_pin_high(GP3);   // left
-  gpio_write_pin_high(GP4);   // right
-  gpio_write_pin_high(GP5);   // A
-  gpio_write_pin_high(GP6);   // B
-  gpio_write_pin_high(GP7);   // X
-  gpio_write_pin_high(GP8);   // Y
-  gpio_write_pin_high(GP9);   // L
-  gpio_write_pin_high(GP10);  // R
+  gpio_set_pin_output(GP27);  // menu
+  gpio_set_pin_output(GP28);  // option
+  gpio_set_pin_output(GP29);  // start
+  gpio_set_pin_output(GP0);   // select
+  gpio_set_pin_output(GP1);   // up
+  gpio_set_pin_output(GP2);   // down
+  gpio_set_pin_output(GP3);   // left
+  gpio_set_pin_output(GP4);   // right
+  gpio_set_pin_output(GP5);   // A
+  gpio_set_pin_output(GP6);   // B
+  gpio_set_pin_output(GP7);   // X
+  gpio_set_pin_output(GP8);   // Y
+  gpio_set_pin_output(GP9);   // L
+  gpio_set_pin_output(GP10);  // R
+
+  gpio_write_pin_high(GP27);
+  gpio_write_pin_high(GP28);
+  gpio_write_pin_high(GP29);
+  gpio_write_pin_high(GP0);
+  gpio_write_pin_high(GP1);
+  gpio_write_pin_high(GP2);
+  gpio_write_pin_high(GP3);
+  gpio_write_pin_high(GP4);
+  gpio_write_pin_high(GP5);
+  gpio_write_pin_high(GP6);
+  gpio_write_pin_high(GP7);
+  gpio_write_pin_high(GP8);
+  gpio_write_pin_high(GP9);
+  gpio_write_pin_high(GP10);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
 	switch (keycode) {
 		case RG_MENU:
       gpio_write_pin(GP27, !record->event.pressed);

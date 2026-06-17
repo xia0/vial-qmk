@@ -6,7 +6,9 @@
     "usb": {
         "vid": "0x6662",
         "pid": "0x4F42",
-        "device_version": "0.1.0"
+        "device_version": "0.1.0",
+        "wait_for_enumeration": false,
+        "no_startup_check": true
     },
     "build": {
       "lto": true
@@ -18,7 +20,7 @@
         "encoder": false,
         "extrakey": true,
         "key_lock": true,
-        "mousekey": false,
+        "mousekey": true,
         "nkro": true
     },
     "qmk": {
@@ -29,7 +31,7 @@
     },
     "matrix_pins": {
         "cols": ["GP17", "GP18", "GP19", "GP20", "GP21", "GP22"],
-        "rows": ["GP26", "GP25", "GP24", "GP23", "GP16", "GP15", "GP14", "GP13", "GP12", "GP11"]
+        "rows": ["GP26", "GP25", "GP24", "GP23", "GP16", "GP11", "GP12", "GP13", "GP14", "GP15"]
     },
     "diode_direction": "COL2ROW",
     "processor": "RP2040",
